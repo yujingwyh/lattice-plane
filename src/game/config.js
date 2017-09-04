@@ -64,26 +64,26 @@ export default {
   },
   leaveData: [
     //0
-    [],
+    {},
     //1
-    [createLeaveData([9,3,bmobType.dot.type],[],[])],
+    createLeaveData([9,3,bmobType.dot],[],[]),
     //2
-    [createLeaveData([],[9,3,bmobType.dot.type],[])],
+    createLeaveData([],[9,3,bmobType.dot],[]),
     //3
-    [createLeaveData([6,2,bmobType.dot.type],[6,2,bmobType.dot.type],[])],
+    createLeaveData([6,2,bmobType.dot],[6,2,bmobType.dot],[]),
     //4
-    [createLeaveData([8,2,bmobType.dot.type],[],[8,2,bmobType.dot.type])],
+    createLeaveData([8,2,bmobType.dot],[],[8,2,bmobType.dot]),
     //5
-    [createLeaveData([12,3,bmobType.dot.type],[8,2,bmobType.dot.type],[4,1,bmobType.dot.type])],
+    createLeaveData([12,3,bmobType.dot],[8,2,bmobType.dot],[4,1,bmobType.dot]),
     //6
-    [createLeaveData([4,1,bmobType.scattering.type],[20,5,bmobType.dot.type],[])],
+    createLeaveData([4,1,bmobType.scattering],[20,5,bmobType.dot],[]),
     //7
-    [createLeaveData([8,2,bmobType.scattering.type],[],[16,4,bmobType.dot.type])],
+    createLeaveData([8,2,bmobType.scattering],[],[16,4,bmobType.dot]),
     //8
-    [createLeaveData([],[12,3,bmobType.scattering.type],[16,4,bmobType.dot.type])],
+    createLeaveData([],[12,3,bmobType.scattering],[16,4,bmobType.dot]),
     //9
-    [createLeaveData([12,3,bmobType.scattering.type],[12,3,bmobType.scattering.type],[12,3,bmobType.scattering.type])],
+    createLeaveData([12,3,bmobType.scattering],[12,3,bmobType.scattering],[12,3,bmobType.scattering]),
     //10
-    [createLeaveData([],[],[45,9,bmobType.scattering.type])],
+    createLeaveData([],[],[45,9,bmobType.scattering]),
   ]
 }

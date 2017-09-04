@@ -4,6 +4,7 @@ import score from '../score'
 
 import {stopGame} from "../index";
 import {canvas} from "../../lib/canvas";
+import {trigger} from "../../lib/event";
 
 export default class Bomb extends Motion {
   _isTank;
@@ -20,6 +21,7 @@ export default class Bomb extends Motion {
       if (motion) {
         score.addScore(motion.score);
         motion.remove();
+        trigger('killPlane',motion);
       }
     }
     else {

@@ -80,7 +80,7 @@ export default class Plane extends Motion{
     return {
       acceleration: 0,
       hVelocity: position === 'right' ? -0.2 : 0.2,
-      vVelocity: 1
+      vVelocity: 0.5
     }
   }
   constructor(options){

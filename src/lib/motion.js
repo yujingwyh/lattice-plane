@@ -36,6 +36,19 @@ on('gamePause', function () {
 });
 on('gameStop',function () {
   motions = {};
+
+  setMotion(config.types);
+
+  function setMotion(types) {
+    for(let keys in types){
+      if(types.hasOwnProperty(keys)){
+        setMotion(types[keys]);
+      }
+    }
+    if(types.type){
+      motions[types.type] = [];
+    }
+  }
 });
 export {motions}
 export default class Motion extends Substance {
@@ -64,7 +77,7 @@ export default class Motion extends Substance {
     const {detailType, onRemoveMotion} = this;
     let len, motion;
 
-    for (len = motions[detailType].length - 1; len >= 0; len--) {
+    for (len = motions[detailType].length - 1 ; len >= 0; len--) {
       motion = motions[detailType][len];
 
       if (motion._id === this._id) {
@@ -90,7 +103,6 @@ export default class Motion extends Substance {
 
     this.onRun = options.onRun || this.onRun;
 
-    motions[detailType] = motions[detailType] || [];
     motions[detailType].push(this);
   }
 

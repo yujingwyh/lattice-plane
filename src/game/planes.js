@@ -15,64 +15,61 @@ const largeType = planeType.large.type;
 
 let planes = {
   [smallType]: {
-    create: small,
-    totalNum: 0,
-    maxExist: 0,
-    bmob: null
+    create: small
   },
   [mediumType]: {
-    create: medium,
-    totalNum: 0,
-    maxExist: 0,
-    bmob: null
+    create: medium
   },
   [largeType]: {
-    create: large,
-    totalNum: 0,
-    maxExist: 0,
-    bmob: null
+    create: large
   },
 };
 
 function setLeave(leave) {
-  Object.assign(planes, config.leaveData[leave]);
+  Object.assign(planes[smallType], config.leaveData[leave][smallType]);
 }
-function create() {
+function create(force) {
   let len, plane, leave;
 
-  if (score.score.surplusScore === 0) {
+  if (score.score.surplusScore === 0 && !force) {
     if (
       motions[smallType].length === 0 &&
       motions[mediumType].length === 0 &&
       motions[largeType].length === 0
     ) {
       leave = score.score.leave + 1;
+      if (leave >= 10) {
+        $.alert('您赢了');
+        return;
+      }
       $.toast("leave " + leave);
-      setTimeout(setLeave(leave), 2000);
+      setTimeout(function () {
+        setLeave(leave);
+        create(true);
+      }, 2200);
     }
-    else {
-      return;
-    }
+    return;
   }
   plane = planes[smallType];
-  for (len = Math.min(plane.totalNum, plane.maxExist); len > 0; len--) {
-    planes[smallType].totalNum--;
+  for (len = Math.min(1, plane.totalNum, plane.maxExist) - motions[smallType].length; len > 0; len--) {
     plane.create(plane.bmob);
   }
   plane = planes[mediumType];
-  for (len = Math.min(plane.totalNum, plane.maxExist); len > 0; len--) {
-    planes[mediumType].totalNum--;
+  for (len = Math.min(plane.totalNum, plane.maxExist) - motions[mediumType].length; len > 0; len--) {
     plane.create(plane.bmob);
   }
   plane = planes[largeType];
-  for (len = Math.min(plane.totalNum, plane.maxExist); len > 0; len--) {
-    planes[largeType].totalNum--;
+  for (len = Math.min(plane.totalNum, plane.maxExist - motions[largeType].length); len > 0; len--) {
     plane.create(plane.bmob);
   }
 }
 
 on('gameStart', function () {
   setLeave(1);
-  create();
+
+  setTimeout(create, 2000);
 });
 on('removePlane', create);
+on('killPlane', function (motion) {
+  planes[motion.detailType].totalNum--;
+});
