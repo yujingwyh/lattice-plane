@@ -19,8 +19,8 @@ export default class Bomb extends Motion {
       //击杀飞机
       motion = errors.impact[types.plane.type];
       if (motion) {
+        this.onRemove();
         score.addScore(motion.score);
-        motion.remove();
         trigger('killPlane',motion);
       }
     }
@@ -42,8 +42,8 @@ export default class Bomb extends Motion {
     const {_coordinate} = motion;
     const types = config.types;
     const velocity = {
-      x: Math.ceil(canvas.maxMoveX / 4),
-      y: Math.ceil(canvas.maxMoveY / 4)
+      x: Math.ceil(canvas.maxMoveX / 6),
+      y: Math.ceil(canvas.maxMoveY / 6)
     };
     const isTank = motion.type === types.tank.type;
 

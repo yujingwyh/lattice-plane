@@ -54,6 +54,7 @@ let drawLattice = (function () {
       pixelY = (y - 1) * latticeSize + canvas.startY;
 
       canvasColors[y][x] = color;
+
       ctx.fillStyle = color === 0 ? config.colors.bg : color;
       ctx.fillRect(pixelX, pixelY, size, size);
     }
@@ -165,7 +166,6 @@ on('gameStop', function () {
       1: config.colors.bg
     }
   });
-  userCtrl.isDown = false;
   canvasColors = (new Exterior({
     map: createLayer(0)
   })).map;
