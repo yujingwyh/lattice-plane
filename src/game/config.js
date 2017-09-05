@@ -54,6 +54,8 @@ export default {
   latticeSize:6,
   //格子直接的间距(像素)
   spaceLattice:2,
+  //进入新等级时飞机多长时间出现
+  waitTime:2000,
   colors:{
     //背景颜色
     bg:'#969e89',

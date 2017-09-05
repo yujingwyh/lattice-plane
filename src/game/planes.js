@@ -42,11 +42,11 @@ function create(force) {
         $.alert('您赢了');
         return;
       }
-      $.toast("leave " + leave);
+      $.toast("leave " + leave, config.waitTime);
       setTimeout(function () {
         setLeave(leave);
         create(true);
-      }, 2200);
+      }, config.waitTime + 200);
     }
     return;
   }
@@ -67,7 +67,7 @@ function create(force) {
 on('gameStart', function () {
   setLeave(1);
 
-  setTimeout(create, 2000);
+  setTimeout(create, config.waitTime);
 });
 on('removePlane', create);
 on('killPlane', function (motion) {
