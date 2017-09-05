@@ -23,8 +23,7 @@ let canvas = {
   maxMoveY:0
 };
 let userCtrl = {
-  //鼠标按下
-  isDown: false,
+  ableMove: false,
   //鼠标坐标
   coordinate: {
     x: 0,
@@ -129,18 +128,24 @@ on('gameInit', function () {
     $.alert('您的屏幕太小');
   }
   //监听事件
-  $canvas
+  $(document)
     .on(eventName[0], function (evt) {
-      userCtrl.isDown = true;
+      userCtrl.ableMove = true;
       setCoordinate(evt);
     })
     .on(eventName[1], function (evt) {
-      if (userCtrl.isDown) {
+      if (userCtrl.ableMove) {
         setCoordinate(evt);
       }
     })
     .on(eventName[2], function () {
-      userCtrl.isDown = false;
+      userCtrl.ableMove = false;
+    });
+  $('.info')
+    .on(eventName[0],function (evt) {
+      userCtrl.ableMove = false;
+
+      evt.stopPropagation();
     });
   function setCoordinate(evt) {
     userCtrl.coordinate = pixelToCoordinate({

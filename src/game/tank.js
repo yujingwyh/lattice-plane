@@ -41,7 +41,7 @@ on('gameStop', function () {
       //发射子弹
       this.bmob.launch(this);
 
-      if (!userCtrl.isDown) {
+      if (!userCtrl.ableMove) {
         return true;
       }
       this.motion.time = 0;

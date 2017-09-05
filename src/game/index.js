@@ -1,5 +1,4 @@
 import status, {state} from './status'
-import screen from '../lib/screen'
 
 import {trigger} from '../lib/event'
 
@@ -13,7 +12,6 @@ let isStop = true;
 function run() {
   if (!isInit) {
     isInit = true;
-    //!screen.isFull && screen.requestFullScreen();
     trigger('gameInit');
     stop(true);
   }

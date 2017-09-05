@@ -1,8 +1,6 @@
 const de = document.documentElement;
 const doc = document;
 
-let isFull = false;
-
 //进入全屏
 function requestFullScreen() {
   if (de.requestFullscreen) {
@@ -14,8 +12,6 @@ function requestFullScreen() {
   else if (de.webkitRequestFullScreen) {
     de.webkitRequestFullScreen();
   }
-
-  isFull = true;
 }
 //退出全屏
 function exitFullscreen() {
@@ -29,12 +25,9 @@ function exitFullscreen() {
   else if (doc.webkitCancelFullScreen) {
     doc.webkitCancelFullScreen();
   }
-
-  isFull = false;
 }
 
 export default {
-  isFull,
   requestFullScreen,
   exitFullscreen
 }
