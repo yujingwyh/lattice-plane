@@ -95,6 +95,7 @@ let drawLattice = (function () {
 //初始
 on('gameInit', function () {
   const $window = $(window);
+  const isSupportTouch = "ontouchstart" in document;
   const eventName = getEventName();
 
   const width = $window.width();
@@ -148,14 +149,14 @@ on('gameInit', function () {
       evt.stopPropagation();
     });
   function setCoordinate(evt) {
+    const positon = isSupportTouch ? evt.originalEvent.targetTouches[0] : evt;
+
     userCtrl.coordinate = pixelToCoordinate({
-      x: evt.clientX,
-      y: evt.clientY
+      x: positon.clientX,
+      y: positon.clientY
     });
   }
   function getEventName() {
-    let isSupportTouch = "ontouchstart" in document;
-
     return isSupportTouch ?
       ['touchstart', 'touchmove', 'touchend'] :
       ['mousedown', 'mousemove', 'mouseup'];
