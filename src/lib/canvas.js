@@ -3,7 +3,6 @@ import Exterior from './exterior'
 import Substance from './substance'
 
 import {on} from './event'
-import {pixelToCoordinate} from "./coordinate";
 
 const $canvas = $('#myCanvas');
 const ctx = $canvas[0].getContext("2d");
@@ -21,14 +20,6 @@ let canvas = {
   //最大移动速度
   maxMoveX:0,
   maxMoveY:0
-};
-let userCtrl = {
-  ableMove: false,
-  //鼠标坐标
-  coordinate: {
-    x: 0,
-    y: 0
-  }
 };
 //画布颜色
 let canvasColors;
@@ -91,12 +82,28 @@ let drawLattice = (function () {
     }
   }
 }());
+/**
+ * 创建层
+ * @param value
+ * @returns {Array}
+ */
+function createLayer(value) {
+  let layer = [];
 
+  for (let i = 0, iLen = canvas.numY; i <= iLen; i++) {
+    let arr = [];
+
+    for (let j = 0, jLen = canvas.numX; j <= jLen; j++) {
+      arr[j] = value;
+    }
+
+    layer[i] = arr;
+  }
+  return layer;
+}
 //初始
 on('gameInit', function () {
   const $window = $(window);
-  const isSupportTouch = "ontouchstart" in document;
-  const eventName = getEventName();
 
   const width = $window.width();
   const height = $window.height();
@@ -128,40 +135,6 @@ on('gameInit', function () {
   if (canvas.numX < 15 || canvas.numY < 15) {
     $.alert('您的屏幕太小');
   }
-  //监听事件
-  $(document)
-    .on(eventName[0], function (evt) {
-      userCtrl.ableMove = true;
-      evt.preventDefault();
-      setCoordinate(evt);
-    })
-    .on(eventName[1], function (evt) {
-      if (userCtrl.ableMove) {
-        setCoordinate(evt);
-      }
-    })
-    .on(eventName[2], function () {
-      userCtrl.ableMove = false;
-    });
-  $('.info')
-    .on(eventName[0],function (evt) {
-      userCtrl.ableMove = false;
-
-      evt.stopPropagation();
-    });
-  function setCoordinate(evt) {
-    const positon = isSupportTouch ? evt.originalEvent.targetTouches[0] : evt;
-
-    userCtrl.coordinate = pixelToCoordinate({
-      x: positon.clientX,
-      y: positon.clientY
-    });
-  }
-  function getEventName() {
-    return isSupportTouch ?
-      ['touchstart', 'touchmove', 'touchend'] :
-      ['mousedown', 'mousemove', 'mouseup'];
-  }
 });
 //添加事件
 on('gameStop', function () {
@@ -191,26 +164,4 @@ on('gameStop', function () {
   drawLattice(bgSubstance);
 });
 
-
-/**
- * 创建层
- * @param value
- * @returns {Array}
- */
-function createLayer(value) {
-  let layer = [];
-
-  for (let i = 0, iLen = canvas.numY; i <= iLen; i++) {
-    let arr = [];
-
-    for (let j = 0, jLen = canvas.numX; j <= jLen; j++) {
-      arr[j] = value;
-    }
-
-    layer[i] = arr;
-  }
-  return layer;
-}
-
-
-export {canvas, drawLattice, userCtrl, substanceLayers};
+export {canvas, drawLattice, substanceLayers};

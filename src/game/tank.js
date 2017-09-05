@@ -2,14 +2,21 @@ import Motion from '../lib/motion'
 import config from "./config";
 import Bmob from './bmob'
 
-import {correction, getOffset} from '../lib/coordinate'
-import {userCtrl} from "../lib/canvas";
+import {correction, getOffset, pixelToCoordinate} from '../lib/coordinate'
+import {canvas, userCtrl} from "../lib/canvas";
 import {stopGame} from "./index";
 import {on} from '../lib/event'
-import {canvas} from "../lib/canvas";
 
 
 let tank;
+let tankCtrl = {
+  ableMove: false,
+  //单位像素
+  position: {
+    x: 0,
+    y: 0
+  }
+};
 
 function getCoordinate(cd1, cd2, step) {
   let val = cd1 - cd2;
@@ -36,14 +43,16 @@ on('gameStop', function () {
     type: config.types.tank.type,
     detailType: config.types.tank.type,
     onRun() {
-      const newCoordinate = correction(userCtrl.coordinate, this.size);
       const {_coordinate} = this;
+
+      let newCoordinate;
       //发射子弹
       this.bmob.launch(this);
 
-      if (!userCtrl.ableMove) {
+      if (!tankCtrl.ableMove) {
         return true;
       }
+      newCoordinate = correction(pixelToCoordinate(tankCtrl.position), this.size);
       this.motion.time = 0;
       this.motion.hVelocity = getCoordinate(_coordinate.x, newCoordinate.x, canvas.maxMoveX);
       this.motion.vVelocity = getCoordinate(_coordinate.y, newCoordinate.y, canvas.maxMoveY);
@@ -67,3 +76,43 @@ on('gameStop', function () {
   newCoordinate.y -= 1;
   tank.setCoordinate(newCoordinate);
 });
+
+//初始
+(function () {
+  const isSupportTouch = "ontouchstart" in document;
+  const eventName = getEventName();
+  //监听事件
+  $(document)
+    .on(eventName[0], function (evt) {
+      tankCtrl.ableMove = true;
+      evt.preventDefault();
+      setPosition(evt);
+    })
+    .on(eventName[1], function (evt) {
+      if (tankCtrl.ableMove) {
+        setPosition(evt);
+      }
+    })
+    .on(eventName[2], function () {
+      tankCtrl.ableMove = false;
+    });
+  $('.info')
+    .on(eventName[0], function (evt) {
+      tankCtrl.ableMove = false;
+
+      evt.stopPropagation();
+    });
+
+  function setPosition(evt) {
+    const positon = isSupportTouch ? evt.originalEvent.targetTouches[0] : evt;
+
+    tankCtrl.position.x = positon.clientX;
+    tankCtrl.position.y = positon.clientY;
+  }
+
+  function getEventName() {
+    return isSupportTouch ?
+      ['touchstart', 'touchmove', 'touchend'] :
+      ['mousedown', 'mousemove', 'mouseup'];
+  }
+}());
