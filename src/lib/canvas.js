@@ -132,6 +132,7 @@ on('gameInit', function () {
   $(document)
     .on(eventName[0], function (evt) {
       userCtrl.ableMove = true;
+      evt.preventDefault();
       setCoordinate(evt);
     })
     .on(eventName[1], function (evt) {
