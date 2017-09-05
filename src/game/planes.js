@@ -51,7 +51,7 @@ function create(force) {
     return;
   }
   plane = planes[smallType];
-  for (len = Math.min(1, plane.totalNum, plane.maxExist) - motions[smallType].length; len > 0; len--) {
+  for (len = Math.min(plane.totalNum, plane.maxExist) - motions[smallType].length; len > 0; len--) {
     plane.create(plane.bmob);
   }
   plane = planes[mediumType];

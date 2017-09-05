@@ -38,7 +38,6 @@ let drawLattice = (function () {
     let size = latticeSize - config.spaceLattice;
     let pixelX, pixelY;
 
-
     if (canvasColors[y][x] !== color) {
       pixelX = (x - 1) * latticeSize + canvas.startX;
       pixelY = (y - 1) * latticeSize + canvas.startY;

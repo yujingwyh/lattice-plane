@@ -19,9 +19,11 @@ export default class Bomb extends Motion {
       //击杀飞机
       motion = errors.impact[types.plane.type];
       if (motion) {
-        this.onRemove();
         score.addScore(motion.score);
         trigger('killPlane',motion);
+
+        this.remove();
+        return true;
       }
     }
     else {
@@ -29,6 +31,7 @@ export default class Bomb extends Motion {
       motion = errors.impact[config.types.tank.type];
       if (motion) {
         stopGame();
+        return true;
       }
     }
     if (errors.out) {

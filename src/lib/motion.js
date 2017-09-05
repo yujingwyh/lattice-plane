@@ -2,6 +2,7 @@ import config from '../game/config'
 import Substance from './substance'
 
 import {on} from './event'
+import status, {state} from "../game/status";
 
 let motions = {};
 let id = 0;
@@ -19,6 +20,8 @@ on('gameRun', function run() {
         typeMotion = motions[key];
 
         for (i = 0, len = typeMotion.length; i < len; i++) {
+          if (status.state !== state.RUNING) return;
+
           typeMotion[i].run();
 
           //run后remove
@@ -26,9 +29,9 @@ on('gameRun', function run() {
             len = typeMotion.length;
             i--;
           }
+          }
         }
       }
-    }
   }, config.interval);
 });
 on('gamePause', function () {
