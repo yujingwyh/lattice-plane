@@ -11,7 +11,7 @@ on('killPlane', function (motion) {
   datas[motion.detailType].totalNum--;
 });
 on('gameStop', function () {
-  datas = createLeaveData([4, 3, config.types.bmob.children.dot], [], [])
+  datas = createLeaveData([9, 3, config.types.bmob.children.dot], [], [])
 });
 
 export default function () {
