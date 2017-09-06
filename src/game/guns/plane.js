@@ -28,7 +28,7 @@ export default class Plane extends Motion{
     }
     //被击杀
     if (errors.impact[tankType.bmob.type]) {
-      score.addScore(this.score);
+      addGold(this.score);
       this.remove();
 
       return true;

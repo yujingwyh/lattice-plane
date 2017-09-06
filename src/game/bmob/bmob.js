@@ -1,6 +1,6 @@
 import Motion from '../../lib/motion'
 import config from '../config'
-import score from '../leave'
+import {addGold} from '../leave'
 
 import {stopGame} from "../index";
 import {canvas} from "../../lib/canvas";
@@ -19,7 +19,7 @@ export default class Bomb extends Motion {
       //击杀飞机
       motion = errors.impact[types.plane.type];
       if (motion) {
-        score.addScore(motion.score);
+        addGold(motion.score);
         trigger('killPlane',motion);
 
         this.remove();

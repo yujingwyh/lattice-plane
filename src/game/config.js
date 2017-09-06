@@ -1,7 +1,7 @@
 export default {
   stepRate: 10,
   //执行时间间隔
-  interval: 30,
+  interval: 40,
   //单个格子所占的像素
   latticeSize:6,
   //格子直接的间距(像素)

@@ -49,6 +49,9 @@ function ctrl() {
 }
 
 on('gameStart',ctrl);
+on('gameStop',function () {
+  stopRun = true;
+});
 on('removePlane', ctrl);
 
 
