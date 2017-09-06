@@ -29,11 +29,10 @@ export default class Plane extends Motion{
     //被击杀
     if (errors.impact[tankType.bmob.type]) {
       addGold(this.score);
+      trigger('killPlane', this);
 
       errors.impact[tankType.bmob.type].remove();
       this.remove();
-
-      trigger('killPlane', this);
       return true;
     }
     if (errors.impact[config.types.plane.type]) {

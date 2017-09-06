@@ -20,10 +20,11 @@ export default class Bomb extends Motion {
       motion = errors.impact[types.plane.type];
       if (motion) {
         addGold(motion.score);
+        trigger('killPlane',motion);
+
         this.remove();
         motion.remove();
 
-        trigger('killPlane',motion);
         return true;
       }
     }

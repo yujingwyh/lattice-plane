@@ -61,19 +61,16 @@ function createLeaveData(plane1, plane2, plane3) {
     [planeType.small.type]: {
       totalNum: plane1[0] || 0,
       maxShow: plane1[1] || 0,
-      existNum:0,
       bmob: plane1[2] || null
     },
     [planeType.medium.type]: {
       totalNum: plane2[0] || 0,
       maxShow: plane2[1] || 0,
-      existNum:0,
       bmob: plane2[2] || null
     },
     [planeType.large.type]: {
       totalNum: plane3[0] || 0,
       maxShow: plane3[1] || 0,
-
       bmob: plane3[2] || null
     },
   };
