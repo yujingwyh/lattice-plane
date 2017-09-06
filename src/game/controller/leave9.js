@@ -5,7 +5,7 @@ import {createLeaveData} from "./index";
 let data;
 
 on('gameStop',function () {
-  data = createLeaveData([12,3,config.types.bmob.scattering],[12,3,config.types.bmob.scattering],[12,3,config.types.bmob.scattering])
+  data = createLeaveData([12,3,config.types.bmob.children.scattering],[12,3,config.types.bmob.children.scattering],[12,3,config.types.bmob.children.scattering])
 });
 
 export default function () {

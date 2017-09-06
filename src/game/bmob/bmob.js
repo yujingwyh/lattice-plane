@@ -20,9 +20,10 @@ export default class Bomb extends Motion {
       motion = errors.impact[types.plane.type];
       if (motion) {
         addGold(motion.score);
-        trigger('killPlane',motion);
-
         this.remove();
+        motion.remove();
+
+        trigger('killPlane',motion);
         return true;
       }
     }
@@ -45,8 +46,8 @@ export default class Bomb extends Motion {
     const {_coordinate} = motion;
     const types = config.types;
     const velocity = {
-      x: Math.ceil(canvas.maxMoveX / 6),
-      y: Math.ceil(canvas.maxMoveY / 6)
+      x: Math.ceil(canvas.maxMoveX / 8),
+      y: Math.ceil(canvas.maxMoveY / 8)
     };
     const isTank = motion.type === types.tank.type;
 

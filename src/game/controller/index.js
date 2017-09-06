@@ -53,23 +53,27 @@ on('gameStop',function () {
   stopRun = true;
 });
 on('removePlane', ctrl);
+on('killPlane', ctrl);
 
 
 function createLeaveData(plane1, plane2, plane3) {
   return {
     [planeType.small.type]: {
       totalNum: plane1[0] || 0,
-      showNum: plane1[1] || 0,
+      maxShow: plane1[1] || 0,
+      existNum:0,
       bmob: plane1[2] || null
     },
     [planeType.medium.type]: {
       totalNum: plane2[0] || 0,
-      showNum: plane2[1] || 0,
+      maxShow: plane2[1] || 0,
+      existNum:0,
       bmob: plane2[2] || null
     },
     [planeType.large.type]: {
       totalNum: plane3[0] || 0,
-      showNum: plane3[1] || 0,
+      maxShow: plane3[1] || 0,
+
       bmob: plane3[2] || null
     },
   };

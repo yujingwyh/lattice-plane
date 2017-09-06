@@ -11,7 +11,7 @@ on('killPlane', function (motion) {
   data[motion.detailType].totalNum--;
 });
 on('gameStop',function () {
-  data = createLeaveData([],[9,3,config.types.bmob.dot],[])
+  data = createLeaveData([],[9,3,config.types.bmob.children.dot],[])
 });
 
 export default function () {
@@ -37,7 +37,7 @@ export default function () {
       if (planeType.hasOwnProperty(key)) {
         type = planeType[key].type;
 
-        for (len = Math.min(data[type].totalNum, data[type].showNum) - motions[type].length; len > 0; len--) {
+        for (len = Math.min(data[type].totalNum, data[type].maxShow) - motions[type].length; len > 0; len--) {
           gun.createPlane(type,data[type].bmob);
         }
       }

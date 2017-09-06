@@ -53,7 +53,6 @@ on('gameStop',function () {
     }
   }
 });
-export {motions}
 export default class Motion extends Substance {
   //运动相关
   motion = {
