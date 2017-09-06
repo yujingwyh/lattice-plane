@@ -1,6 +1,6 @@
 import Motion from '../../lib/motion'
 import config from '../config'
-import score from '../score'
+import score from '../leave'
 
 import {stopGame} from "../index";
 import {canvas} from "../../lib/canvas";
@@ -30,7 +30,7 @@ export default class Bomb extends Motion {
       //击杀坦克
       motion = errors.impact[config.types.tank.type];
       if (motion) {
-        stopGame();
+        stopGame(true);
         return true;
       }
     }

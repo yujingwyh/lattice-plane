@@ -1,5 +1,5 @@
 import Motion from '../../lib/motion'
-import score from '../score'
+import {addGold} from '../leave'
 import config from '../config'
 import Bmob from '../bmob'
 
@@ -23,7 +23,7 @@ export default class Plane extends Motion{
     const tankType = config.types.tank;
 
     if (errors.impact[tankType.type]) {
-      stopGame();
+      stopGame(true);
       return true;
     }
     //被击杀
@@ -101,7 +101,7 @@ export default class Plane extends Motion{
 
     Object.assign(this.motion, Plane.initVelocity(position.position));
 
-    score.addToAllScore(this.score);
+    addGold(this.score);
 
     this.bmob = new Bmob({
       kind: options.bmobKind,

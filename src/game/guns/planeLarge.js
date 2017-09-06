@@ -4,18 +4,20 @@ import Plane from './plane'
 const planeType = config.types.plane;
 
 export default function (bmob) {
-  new Plane({
+  return new Plane({
     bmobKind: bmob.type,
-    score: planeType.children.small.score * bmob.score,
+    score: planeType.children.large.score * bmob.score,
     map: [
-      [1, 0, 1],
-      [1, 1, 1],
-      [0, 1, 0]
+      [1, 0, 1, 0, 1],
+      [1, 1, 1, 1, 1],
+      [0, 0, 1, 0, 0],
+      [1, 1, 1, 1, 1],
+      [0, 0, 1, 0, 0]
     ],
     colors: {
       1: '#333'
     },
     type: planeType.type,
-    detailType: planeType.children.small.type,
+    detailType: planeType.children.large.type,
   })
 }

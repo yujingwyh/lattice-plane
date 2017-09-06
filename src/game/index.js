@@ -2,8 +2,7 @@ import status, {state} from './status'
 
 import {trigger} from '../lib/event'
 
-import './tank'
-import './planes'
+import './controller'
 
 let isInit = false;
 let isStop = true;
@@ -13,7 +12,7 @@ function run() {
   if (!isInit) {
     isInit = true;
     trigger('gameInit');
-    stop(true);
+    stop();
   }
   status.state = state.RUNING;
   if(isStop){
@@ -27,10 +26,13 @@ function pause() {
   status.state = state.PARSEING;
   trigger('gamePause');
 }
-//停止
-function stop(isInit) {
+/**
+ * 停止
+ * @param isFaile 失败
+ */
+function stop(isFaile = false) {
   pause();
-  if(!isInit){
+  if(isFaile){
     $.toast('游戏结束');
   }
   status.state = state.STOPING;

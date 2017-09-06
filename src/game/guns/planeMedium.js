@@ -4,7 +4,7 @@ import Plane from './plane'
 const planeType = config.types.plane;
 
 export default function (bmob) {
-  new Plane({
+  return new Plane({
     bmobKind: bmob.type,
     score: planeType.children.medium.score * bmob.score,
     map: [

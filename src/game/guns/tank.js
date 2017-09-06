@@ -1,11 +1,11 @@
-import Motion from '../lib/motion'
-import config from "./config";
-import Bmob from './bmob'
+import Motion from '../../lib/motion'
+import config from "../config";
+import Bmob from '../bmob/index'
 
-import {correction, getOffset, pixelToCoordinate} from '../lib/coordinate'
-import {canvas, userCtrl} from "../lib/canvas";
-import {stopGame} from "./index";
-import {on} from '../lib/event'
+import {correction, getOffset, pixelToCoordinate} from '../../lib/coordinate'
+import {canvas, userCtrl} from "../../lib/canvas";
+import {stopGame} from "../index";
+import {on} from '../../lib/event'
 
 
 let tank;
@@ -61,7 +61,7 @@ on('gameStop', function () {
       const planeType = config.types.plane;
 
       if (errors.impact[planeType.type] || errors.impact[planeType.bmob.type]) {
-        stopGame();
+        stopGame(true);
         return true;
       }
     }
