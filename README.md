@@ -1,5 +1,7 @@
 # lattice-plane
-格子飞机游戏
+格子飞机游戏 <br><br>
+
+浏览地址：[http://lp.honglisite.com/](http://lp.honglisite.com/)
 
 ## bug
 1. 飞机速度
