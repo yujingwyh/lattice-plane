@@ -81,14 +81,13 @@ function ctrl() {
         //增加新等级
         else {
           stopRun = true;
-
           if (!addLeave()) {
             $.toast("leave " + leave, config.waitTime);
             setTimeout(function () {
-              wheel = 0;
               leaveCtrl = leaves[leave];
-              planes = createLeaveData([], [], []);
               stopRun = false;
+              wheel = 0;
+              planes = createLeaveData([], [], []);
 
               if (state.RUNING === status.state) {
                 ctrl();
@@ -107,6 +106,9 @@ on('gameStart', function () {
 on('gameRun', ctrl);
 on('gameStop',function () {
   stopRun = true;
+  wheel = 0;
+  planes = createLeaveData([], [], []);
+  leaveCtrl = null;
 });
 on('removePlane', ctrl);
 on('killPlane', function (motion) {
