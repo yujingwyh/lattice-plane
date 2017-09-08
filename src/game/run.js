@@ -1,6 +1,6 @@
 import config from './config'
 
-import {on,trigger} from "../lib/event";
+import {on, trigger} from "../lib/event";
 import status, {state} from "./status";
 import {motions} from "../lib/motion";
 
@@ -18,14 +18,14 @@ on('gameRun', function run() {
         typeMotion = motions[key];
 
         for (i = 0, len = typeMotion.length; i < len; i++) {
-          if (status.state !== state.RUNING) return;
+          if (status.state === state.RUNING) {
+            typeMotion[i].run();
 
-          typeMotion[i].run();
-
-          //run后remove
-          if (len !== typeMotion.length) {
-            len = typeMotion.length;
-            i--;
+            //run后remove
+            if (len !== typeMotion.length) {
+              len = typeMotion.length;
+              i--;
+            }
           }
         }
       }

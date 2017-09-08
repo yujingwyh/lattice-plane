@@ -9,8 +9,10 @@ function onWheel(wheel) {
   }
 }
 
-function onCreatePlane(options, wheel) {
-  return options;
+function onCreatePlane(plane, wheel, planes) {
+  const position = generateCoordinate(plane.size);
+
+  initGun(plane,position.coordinate, generateMotion(position.position))
 }
 
 function onRun(wheel, planes) {

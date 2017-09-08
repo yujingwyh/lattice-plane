@@ -5,8 +5,8 @@ const planeType = config.types.plane;
 
 export default function (bmob) {
   return new Plane({
-    bmobKind: bmob.type,
-    score: planeType.children.large.score * bmob.score,
+    bmob,
+    score:planeType.children.large.score,
     map: [
       [1, 0, 1, 0, 1],
       [1, 1, 1, 1, 1],

@@ -27,9 +27,9 @@ export default {
       type: 3,
       bmob: {type: 4},
       children: {
-        small: {type: 5, score: 10},
-        medium: {type: 6, score: 12},
-        large: {type: 7, score: 16}
+        small: {type: 5,score:25},
+        medium: {type: 6,score:20},
+        large: {type: 7,score:15}
       }
     },
     bmob: {

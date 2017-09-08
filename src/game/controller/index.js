@@ -41,7 +41,7 @@ let wheel = 0;
 let planes = createLeaveData([], [], []);
 
 function ctrl() {
-  let hasCreate, key, data, len, hasExist, options;
+  let hasCreate, key, data, len, hasExist;
 
   if (!stopRun) {
     for (key in planes) {
@@ -49,11 +49,7 @@ function ctrl() {
         data = planes[key];
 
         for (len = Math.min(data.totalNum, data.maxShow) - motions[key].length; len > 0; len--) {
-          options = {};
-          options.type = key;
-          options.bmob = data.bmob;
-
-          gun.createPlane(leaveCtrl.onCreatePlane(options,wheel));
+          gun.createPlane(key, data.bmob);
 
           hasCreate = true;
         }
@@ -119,6 +115,9 @@ on('killPlane', function (motion) {
 });
 on('run', function () {
   leaveCtrl && leaveCtrl.onRun(wheel, planes);
+});
+on('createPlane', function (plane) {
+  leaveCtrl && leaveCtrl.onCreatePlane(plane, wheel, planes);
 });
 
 
