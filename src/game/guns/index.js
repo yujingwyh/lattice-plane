@@ -18,7 +18,7 @@ const typePlane = {
 export default {
   planeType,
   //创建飞机
-  createPlane: function (type, bmob) {
-    return typePlane[type](bmob);
+  createPlane: function (options) {
+    return typePlane[options.type](options.bmob);
   }
 }

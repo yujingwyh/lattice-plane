@@ -1,7 +1,15 @@
 import config from '../config'
+//run 必须在最前面
+import '../run'
+import gun from '../guns'
+
+import status, {state} from "../status";
 import {addLeave, leave} from "../leave";
 import {on} from "../../lib/event";
-
+import {motions} from "../../lib/motion";
+/*
+* onWheel,onRun,onCreatePlane
+* */
 import leave1 from './leave1'
 import leave2 from './leave2'
 import leave3 from './leave3'
@@ -27,33 +35,89 @@ const leaves = {
   [10]: leave10,
 };
 
+let leaveCtrl;
 let stopRun = true;
+let wheel = 0;
+let planes = createLeaveData([], [], []);
 
 function ctrl() {
-  let isUpgrade;
+  let hasCreate, key, data, len, hasExist, options;
 
   if (!stopRun) {
-    isUpgrade = leaves[leave]();
-  }
-  if (isUpgrade || stopRun) {
-    stopRun = true;
+    for (key in planes) {
+      if (planes.hasOwnProperty(key)) {
+        data = planes[key];
 
-    if (!addLeave()) {
-      $.toast("leave " + leave, config.waitTime);
-      setTimeout(function () {
-        stopRun = false;
-        ctrl();
-      }, config.waitTime + 200);
+        for (len = Math.min(data.totalNum, data.maxShow) - motions[key].length; len > 0; len--) {
+          options = {};
+          options.type = key;
+          options.bmob = data.bmob;
+
+          gun.createPlane(leaveCtrl.onCreatePlane(options,wheel));
+
+          hasCreate = true;
+        }
+      }
+    }
+    if (!hasCreate) {
+      for (key in planes) {
+        if (planes.hasOwnProperty(key)) {
+          if (motions[key].length) {
+            hasExist = true;
+            break;
+          }
+        }
+      }
+      if (!hasExist) {
+        //增加新的轮数
+        wheel++;
+
+        data = leaveCtrl ? leaveCtrl.onWheel(wheel) : null;
+
+        if (data) {
+          Object.assign(planes, data);
+          ctrl();
+        }
+        //增加新等级
+        else {
+          stopRun = true;
+
+          if (!addLeave()) {
+            $.toast("leave " + leave, config.waitTime);
+            setTimeout(function () {
+              wheel = 0;
+              leaveCtrl = leaves[leave];
+              planes = createLeaveData([], [], []);
+              stopRun = false;
+
+              if (state.RUNING === status.state) {
+                ctrl();
+              }
+            }, config.waitTime + 200);
+          }
+        }
+      }
     }
   }
 }
 
-on('gameStart',ctrl);
+on('gameStart', function () {
+  stopRun = false;
+});
+on('gameRun', ctrl);
 on('gameStop',function () {
   stopRun = true;
 });
 on('removePlane', ctrl);
-on('killPlane', ctrl);
+on('killPlane', function (motion) {
+  if(!stopRun){
+    planes[motion.detailType].totalNum--;
+    ctrl();
+  }
+});
+on('run', function () {
+  leaveCtrl && leaveCtrl.onRun(wheel, planes);
+});
 
 
 function createLeaveData(plane1, plane2, plane3) {

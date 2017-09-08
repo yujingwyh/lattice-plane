@@ -91,6 +91,7 @@ export default class extends Exterior {
    * @param newCoordinate {{x:number,y:number}} 新坐标
    */
   setCoordinate(newCoordinate) {
+    if (newCoordinate.x === this._coordinate.x && newCoordinate.y === this._coordinate.y) return;
     //验证会不会出错
     if (!this._checkError(newCoordinate)) {
       //移除之前图形
