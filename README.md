@@ -1,5 +1,5 @@
 # lattice-plane
-格子飞机游戏 <br><br>
+格子飞机游戏 <br>
 
 浏览地址：[http://lp.honglisite.com/](http://lp.honglisite.com/)
 
