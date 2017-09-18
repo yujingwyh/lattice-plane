@@ -7,14 +7,14 @@ const bmobChildren = config.types.bmob.children;
 
 function onWheel(wheel) {
   if (wheel === 1) {
-    return createLeaveData([],[9,3,bmobChildren.dot],[])
+    return createLeaveData([],[6,3,bmobChildren.dot],[])
   }
 }
 
 function onCreatePlane(plane, wheel, planes) {
   const position = generateCoordinate(plane.size);
 
-  initGun(plane,position.coordinate, generateMotion(position.position))
+  initGun(plane,position.coordinate, generateMotion(position.position,0.2))
 }
 
 function onRun(wheel, planes) {

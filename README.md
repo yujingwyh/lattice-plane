@@ -3,29 +3,29 @@
 
 浏览地址（建议使用移动端）：[http://lp.honglisite.com/](http://lp.honglisite.com/)
 
-##开发说明
-1. 文件结构 
-    src                     源码目录
-    src/game                核心目录
-    src/game/bmob           子弹相关
-    src/game/controller     控制
-    src/game/guns           坦克和各种类型的飞机的实例
-    src/game/config.js      配置
-    src/game/leave.js       关卡
-    src/game/run.js         运行
-    src/game/status.js      游戏状态
-    src/lib                 一些库
-    src/lib/canvas.js       画布相关
-    src/lib/coordinate.js   坐标相关
-    src/lib/event.js        事件
-    src/lib/exterior.js     外观类
-    src/lib/motion.js       运动物体类
-    src/lib/substance.js    物体类
-    src/lib/util.js         零散函数单元
-    src/main.js             入口文件
+## 开发说明
+1. 文件结构 <br/>
+    src                     源码目录 <br/>  
+    src/game                核心目录 <br/>
+    src/game/bmob           子弹相关 <br/>
+    src/game/controller     控制 <br/>
+    src/game/guns           坦克和各种类型的飞机的实例 <br/>
+    src/game/config.js      配置 <br/>
+    src/game/leave.js       关卡 <br/>
+    src/game/run.js         运行 <br/>
+    src/game/status.js      游戏状态 <br/>
+    src/lib                 一些库 <br/>
+    src/lib/canvas.js       画布相关 <br/>
+    src/lib/coordinate.js   坐标相关 <br/>
+    src/lib/event.js        事件 <br/>
+    src/lib/exterior.js     外观类 <br/>
+    src/lib/motion.js       运动物体类 <br/>
+    src/lib/substance.js    物体类 <br/>
+    src/lib/util.js         零散函数单元 <br/>
+    src/main.js             入口文件 <br/>
     web/    
-    web/dist                编译到的目录
-    web/libs                第三方库
+    web/dist                编译到的目录 <br/>
+    web/libs                第三方库 <br/>
 2. 关于运行
 motion类会有初始位移，水平速度，竖直速度，竖直加速度和时间属性，每个飞机都是motion类的实例。整个程序只有一个setInterval来间隔的跑motion实例对象的run方法。run方法中每次time都会+1，然后计算出坐标并设置。
 
