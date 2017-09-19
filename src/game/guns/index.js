@@ -46,9 +46,9 @@ function generateCoordinate(size) {
  * @param position {string} 位置
  * @returns {{acceleration: number, hVelocity: number, vVelocity: number}}
  */
-function generateMotion(position,acceleration) {
+function generateMotion(position) {
   return {
-    acceleration,
+    acceleration: 0,
     hVelocity: position === 'right' ? -0.2 : 0.2,
     vVelocity: 0.5
   }
