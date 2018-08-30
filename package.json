@@ -9,7 +9,7 @@
     "url": "https://github.com/yujingwyh/lattice-plane"
   },
   "scripts": {
-    "dev": "node ./node_modules/parcel-bundler/bin/cli ./src/index.html -p 3111",
+    "dev": "node ./node_modules/parcel-bundler/bin/cli start ./src/index.html -p 3111",
     "build": ""
   },
   "dependencies": {
