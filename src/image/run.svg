@@ -1,1 +1,11 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1493446223057" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="524" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M922.24 539.008c0 231.488-187.776 419.2-419.264 419.2-231.552 0-419.2-187.712-419.2-419.2 0-231.552 187.712-419.2 419.2-419.2C734.528 119.808 922.24 307.456 922.24 539.008zM408 344l0 390.016 282.048-195.072L408 344z" p-id="525"></path></svg>
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg t="1493446223057" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     p-id="524" width="200" height="200">
+  <defs>
+    <style type="text/css"></style>
+  </defs>
+  <path
+    d="M922.24 539.008c0 231.488-187.776 419.2-419.264 419.2-231.552 0-419.2-187.712-419.2-419.2 0-231.552 187.712-419.2 419.2-419.2C734.528 119.808 922.24 307.456 922.24 539.008zM408 344l0 390.016 282.048-195.072L408 344z"
+    p-id="525"></path>
+</svg>
