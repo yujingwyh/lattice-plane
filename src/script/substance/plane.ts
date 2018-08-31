@@ -3,13 +3,7 @@ import {lattice} from '../config'
 import {getRandomNum} from "../units/helper";
 import {constructorOptions as bulletConstructorOptions} from './bullet'
 
-interface kindsInterface{
-  small:number,
-  medium:number,
-  large:number
-}
-
-const enum KINDS{
+enum KINDS{
   small,
   medium,
   large
@@ -21,7 +15,7 @@ interface constructorOptions extends substanceConstructorOptions {
   shootSpeed: shootSpeedType
 }
 
-export {KINDS as planeKinds,kindsInterface as planeKindsInterface,constructorOptions as planeConstructorOptions}
+export {KINDS as planeKinds,constructorOptions as planeConstructorOptions}
 export default class Plane extends Substance {
   readonly kind: KINDS;
   readonly shootSpeed: shootSpeedType;

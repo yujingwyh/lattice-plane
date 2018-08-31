@@ -1,9 +1,9 @@
 import Substance from './base'
 import Tank, {tankConstructorOptions} from './tank'
-import Plane, {planeConstructorOptions,planeKinds, planeKindsInterface} from "./plane";
+import Plane, {planeConstructorOptions, planeKinds} from "./plane";
 import Bullet, {bulletConstructorOptions, bulletKinds} from "./bullet";
 
-import {lattice,bullet, tank,plane} from "../config";
+import {bullet, lattice, plane, tank} from "../config";
 import {renderLayers} from "../units/canvas";
 import {each} from "../units/helper";
 
@@ -19,11 +19,11 @@ const substances: substancesInterface = {
   planes: [],
   bullets: []
 };
-const planeKindNumbers: planeKindsInterface = {
-  small: 0,
-  medium: 0,
-  large: 0
-};
+const planeKindNumbers = Object.keys(planeKinds).reduce((prev: any, now) => {
+  !isNaN(parseInt(now)) && (prev[now] = 0);
+
+  return prev;
+}, {});
 
 function createTank() {
   const tankOptions: tankConstructorOptions = {
@@ -50,49 +50,48 @@ function createTank() {
   });
 
   substances.tank = new Tank(tankOptions, bulletOptions);
-  substances.tank.bulletOptions.source = substances.tank;
 }
 
 function createPlane(kind, moveSpeed) {
+  const colorMap = {
+    1: '#333'
+  };
   const planeOptions: planeConstructorOptions = {
     shape: null,
-    kind:kind,
-    moveSpeed:moveSpeed,
+    kind: kind,
+    moveSpeed: moveSpeed,
     shootSpeed: plane.shootSpeed,
     renderLayer: renderLayers.plane,
     checkLayer: renderLayers.plane,
   };
   const bulletOptions: bulletConstructorOptions = {
-    kind: bulletKinds.line,
     moveSpeed: bullet.moveSpeed,
     renderLayer: renderLayers.tankBullet,
     checkLayer: renderLayers.plane,
+    kind: null,
     shape: null
   };
 
- /* const planeKindOption: planeOptionInterFace = (function () {
-    const kindOption: planeOptionInterFace = {
-      [planeKinds.small]: {},
-      [planeKinds.medium]: {},
-      [planeKinds.large]: {},
-    };
-    const colorMap = {
-      1: '#333'
-    };
-
-    kindOption.shape = generateShape([
+  if (kind === planeKinds.small) {
+    planeOptions.shape = Substance.generateShape([
       [1, 0, 1],
       [1, 1, 1],
       [0, 1, 0]
     ], colorMap);
-    kindOption.shape = generateShape([
+    bulletOptions.kind = bulletKinds.line;
+  }
+  if (kind === planeKinds.medium) {
+    planeOptions.shape = Substance.generateShape([
       [1, 0, 1, 0, 1],
       [1, 1, 1, 1, 1],
       [0, 0, 1, 0, 0],
       [1, 1, 1, 1, 1],
       [0, 0, 1, 0, 0]
     ], colorMap);
-    kindOption.shape = generateShape([
+    bulletOptions.kind = bulletKinds.horn;
+  }
+  if (kind === planeKinds.large) {
+    planeOptions.shape = Substance.generateShape([
       [1, 0, 1, 1, 1, 0, 1],
       [0, 1, 1, 1, 1, 1, 0],
       [1, 0, 1, 1, 1, 0, 1],
@@ -100,10 +99,15 @@ function createPlane(kind, moveSpeed) {
       [0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 1, 0, 0, 0]
     ], colorMap);
+    bulletOptions.kind = bulletKinds.horn;
+  }
 
+  const newPlane = new Plane(planeOptions, bulletOptions);
 
-    return kindOption
-  }());*/
+  if (newPlane.status === substanceStates.normal) {
+    substances.planes.push(newPlane);
+    planeKindNumbers[newPlane.kind] += 1;
+  }
 }
 
 function reset() {
@@ -112,12 +116,12 @@ function reset() {
 
   substances.planes = [];
   substances.bullets = [];
-  Object.keys(planeKindNumbers).forEach(item=>{
+  Object.keys(planeKindNumbers).forEach(item => {
     planeKindNumbers[item] = 0;
   });
 
   each(start, size, (x, y) => {
-    Object.keys(renderLayers).forEach(item=>{
+    Object.keys(renderLayers).forEach(item => {
       renderLayers[item][x][y] = 0;
     });
   });
@@ -131,11 +135,21 @@ function reset() {
 
 function run() {
   substances.tank.run();
+
+  //run plane
+  substances.planes = substances.planes.filter(item => {
+    item.run();
+
+    if(item.status !== substanceStates.normal){
+      planeKindNumbers[item.kind] -= 1;
+
+      return false;
+    }
+    return true;
+  });
   //run bullet
   substances.bullets.forEach(item => item.run());
-  //run plane
-  substances.planes.forEach(item => item.run());
 }
 
-export {createPlane, planeKindNumbers}
+export {createPlane, planeKinds, planeKindNumbers}
 export default {createTank, reset, run, substances, substanceStates}

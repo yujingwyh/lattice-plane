@@ -70,10 +70,10 @@ export default class Tank extends Substance {
       );
 
       this.addToLayer();
+    }
 
-      if (this.checkCollide()) {
-        this.status = Substance.status.collide;
-      }
+    if (this.checkCollide()) {
+      this.status = Substance.status.collide;
     }
   }
 

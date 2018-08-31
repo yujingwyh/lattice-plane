@@ -16,7 +16,9 @@ const toast = (text: string, {
 } = {}) => {
   const $toast = $('.toast');
 
-  $toast.text(text).css('marginLeft', -$toast.width() / 2).show();
+  $toast.text(text).show().css({
+    marginLeft: -$toast.width() / 2
+  });
 
   time && setTimeout(() => {
     $toast.hide();
