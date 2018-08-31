@@ -1,8 +1,7 @@
-import data from './data'
 import level from './level'
+import substance from './substance'
 import canvas from "./units/canvas";
 
-import {Tank} from './substance'
 import {toast} from "./units/dom";
 
 export default class Game {
@@ -13,11 +12,13 @@ export default class Game {
     this.$control = $control;
     this.run = this.run.bind(this);
 
-    data.tank = new Tank();
+    canvas.init();
+    substance.createTank();
   }
 
   start() {
     this.timer = window.requestAnimationFrame(this.run);
+
     this.$control.eq(0).hide();
     this.$control.eq(1).show();
     this.$control.eq(2).show();
@@ -35,13 +36,8 @@ export default class Game {
     this.pause();
 
     level.reset();
-    canvas.resetLayers();
+    substance.reset();
 
-    data.tank.position = {
-      x: Math.ceil((data.latticeX - data.tank.shapeSize.x) / 2) + 1,
-      y: data.latticeY - data.tank.shapeSize.y
-    };
-    data.tank.addToLayer();
     canvas.render();
 
     this.$control.eq(1).hide();
@@ -49,15 +45,11 @@ export default class Game {
     this.$control.eq(0).show();
   }
 
-  //run
   private run() {
     level.run();
-    //run bullet
-    data.bullets.forEach(item => item.run());
-    //run plane
-    data.planes.forEach(item => item.run());
-    //run tank 检测game over
-    if (data.tank.run()) {
+    substance.run();
+
+    if (substance.substances.tank.status !== substance.substanceStates.normal) {
       toast('GAME OVER');
       return this.stop();
     }

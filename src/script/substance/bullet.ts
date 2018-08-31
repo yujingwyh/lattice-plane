@@ -1,11 +1,27 @@
-import Substance from './base'
+import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType} from './base'
 
-//type 1 | 2 + 3 ×
 
+enum KINDS {
+  line,
+  horn,
+  cross
+}
+
+export interface constructorOptions extends substanceConstructorOptions {
+  kind: KINDS,
+  moveSpeed: moveSpeedType,
+  source?: Substance,
+}
+
+export {KINDS as bulletKinds,constructorOptions as bulletConstructorOptions}
 export default class Bullet extends Substance {
-  kind = 0;
-  type = 0;
+  constructor(options: constructorOptions) {
+    options.shape = [[]];
+    super(options)
 
-  run() {
+  }
+
+  run(){
+
   }
 }

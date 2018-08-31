@@ -1,11 +1,12 @@
-import Substance from './base'
-import data from "../data";
+import Substance, {constructorOptions as substanceConstructorOptions, coordinateInterface, shootSpeedType} from './base'
 
 import {$} from '../units/dom'
-import {coordinateInterface} from '../units/helper'
 import {pixelToCoordinate} from "../units/canvas";
-import {tank} from "../config";
+import {constructorOptions as bulletConstructorOptions} from "./bullet";
 
+interface constructorOptions extends substanceConstructorOptions {
+  readonly shootSpeed: shootSpeedType
+}
 
 const getPosition = evt => {
   const position = evt.targetTouches[0];
@@ -16,13 +17,21 @@ const getPosition = evt => {
   });
 };
 
+export {constructorOptions as tankConstructorOptions}
 export default class Tank extends Substance {
+  readonly shootSpeed: shootSpeedType;
+
   private ableSetPosition: boolean;
   private pressPosition: coordinateInterface;
 
-  constructor() {
-    super(tank.shape, data.layerTank);
+  public bulletOptions: bulletConstructorOptions;
 
+  constructor(tankOptions: constructorOptions, bulletOptions: bulletConstructorOptions) {
+    super(tankOptions);
+
+    this.shootSpeed = tankOptions.shootSpeed;
+    this.ableSetPosition = false;
+    this.bulletOptions = bulletOptions;
     //监听事件
     $(document)
       .on('touchstart', evt => {
@@ -52,10 +61,7 @@ export default class Tank extends Substance {
       });
   }
 
-
-  run(): boolean {
-    let isCollide = false;
-
+  run() {
     if (this.ableSetPosition) {
       this.removeFormLayer();
 
@@ -65,12 +71,11 @@ export default class Tank extends Substance {
 
       this.addToLayer();
 
-      return this.checkCollide(data.layerPlane);
+      if (this.checkCollide()) {
+        this.status = Substance.status.collide;
+      }
     }
-
-    return isCollide;
   }
-
 
   //获得居中的位置
   private getCenterPosition(position) {

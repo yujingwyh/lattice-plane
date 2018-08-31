@@ -1,14 +1,9 @@
 import 'babel-polyfill'
 
 import Game from './game'
-import canvas from './units/canvas'
 import {$} from "./units/dom";
 
-
-//init
 $(() => {
-  canvas.init();
-
   const $control = $('.control>span');
   const game = new Game($control);
 

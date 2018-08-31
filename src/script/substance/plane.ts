@@ -1,87 +1,74 @@
-import Substance from './base'
-import data from '../data'
-
+import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType, shootSpeedType} from './base'
+import {lattice} from '../config'
 import {getRandomNum} from "../units/helper";
+import {constructorOptions as bulletConstructorOptions} from './bullet'
 
-enum STATUS {
-  normal,
-  outSide,
-  collideBullet,
-  collidePlane
+interface kindsInterface{
+  small:number,
+  medium:number,
+  large:number
 }
 
+const enum KINDS{
+  small,
+  medium,
+  large
+}
+
+interface constructorOptions extends substanceConstructorOptions {
+  kind: KINDS,
+  moveSpeed: moveSpeedType,
+  shootSpeed: shootSpeedType
+}
+
+export {KINDS as planeKinds,kindsInterface as planeKindsInterface,constructorOptions as planeConstructorOptions}
 export default class Plane extends Substance {
-  public speed;
+  readonly kind: KINDS;
+  readonly shootSpeed: shootSpeedType;
+  readonly moveSpeed: moveSpeedType;
+
   private yPosition: number;
-  private isInit: boolean = false;
+  private bulletOptions: bulletConstructorOptions;
 
-  constructor(speed) {
-    super(Substance.generateShape([
-      [1, 0, 1, 0, 1],
-      [1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0],
-      [1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0]
-    ], {
-      1: '#333'
-    }), data.layerPlane);
+  constructor(planeOptions: constructorOptions, bulletOptions: bulletConstructorOptions) {
+    super(planeOptions);
 
-    this.speed = speed;
+    this.kind = planeOptions.kind;
+    this.moveSpeed = planeOptions.moveSpeed;
+    this.shootSpeed = planeOptions.shootSpeed;
+    this.bulletOptions = bulletOptions;
+
     this.position = this.getInitPosition();
     this.yPosition = this.position.y;
 
-    if (this.checkAbnormal() === STATUS.normal) {
-      data.planes.push(this);
+    if (this.checkCollide()) {
+      this.status = Substance.status.collide;
     }
   }
 
   run() {
-    this.yPosition += this.speed;
+    this.removeFormLayer();
+
+    this.yPosition += this.moveSpeed;
     this.position.y = Math.floor(this.yPosition);
 
-    const status = this.checkAbnormal();
-
-    if (status === STATUS.outSide || status === STATUS.collideBullet) {
-      return this.destroy();
+    //判断超出范围
+    const insidePosition = this.getInsidePosition(this.position);
+    if (this.position.x !== insidePosition.x || this.position.y !== insidePosition.y) {
+      return this.status = Substance.status.outSide
     }
-    if (status === STATUS.collidePlane) {
-      this.yPosition -= this.speed;
+    //判断碰到其他飞机
+    if (this.checkCollide()) {
+      this.yPosition -= this.moveSpeed;
       this.position.y = Math.floor(this.yPosition);
-
-      return;
     }
 
     this.addToLayer();
   }
 
-  checkAbnormal() {
-    const fixPosition = this.getFixPosition(this.position);
-    //检测超出
-    if (this.position.x !== fixPosition.x || this.position.y !== fixPosition.y) {
-      return STATUS.outSide;
-    }
-    //检测被射击
-    if (this.checkCollide(data.layerTankBullet)) {
-      return STATUS.collideBullet;
-    }
-    //检测碰到其他飞机
-    if (this.checkCollide(data.layerTankBullet)) {
-      return STATUS.collidePlane;
-    }
-
-    return STATUS.normal;
-  }
-
-  destroy() {
-    if (!this.isInit) return;
-
-    this.removeFormLayer();
-    data.planes = data.planes.filter(item => item !== this);
-  }
-
   private getInitPosition() {
     return {
-      x: getRandomNum(1, data.latticeX - this.shapeSize.x + 1),
+      x: getRandomNum(1, lattice.xNumber - this.shapeSize.x + 1),
       y: 1
     }
   }
