@@ -6,21 +6,24 @@ const lattice = {
   //所占的像素
   size: 8,
   //之间的间距
-  space: 2,
-  //格子背景色
-  backgroundColor: '#969e89',
+  space: 2
 };
 
-const tank = {
-  shootSpeed: 0
+const colors = {
+  background: '#969e89',
+  tankMap: {
+    1: '#333'
+  },
+  planeMap: {
+    1: '#333'
+  },
+  bullet: {}
+};
+const speed = {
+  tankShoot: 0,
+  planeShoot: 0,
+  bulletMove: 0
 };
 
-const plane = {
-  shootSpeed: 0
-};
-const bullet = {
-  moveSpeed: 0
-};
 
-
-export {lattice, tank, plane, bullet}
+export {lattice, colors, speed}

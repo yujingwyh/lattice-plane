@@ -1,6 +1,6 @@
 import {$, isMobile, toast} from './dom'
 import {each} from './helper'
-import {lattice} from '../config'
+import {lattice,colors} from '../config'
 
 const canvas = $('canvas');
 const ctx = canvas[0].getContext("2d");
@@ -62,7 +62,7 @@ const render = () => {
       renderLayers.plane[x][y] ||
       renderLayers.tankBullet[x][y] ||
       renderLayers.planeBullet[x][y] ||
-      lattice.backgroundColor;
+      colors.background;
 
     if (color !== renderLayers.compound[x][y]) {
       renderLayers.compound[x][y] = color;

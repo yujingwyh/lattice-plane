@@ -1,9 +1,10 @@
 import Substance from './base'
 import Tank, {tankConstructorOptions} from './tank'
-import Plane, {planeConstructorOptions, planeKinds} from "./plane";
+import Plane, {planeConstructorOptions} from "./plane";
 import Bullet, {bulletConstructorOptions, bulletKinds} from "./bullet";
+import {handleOptions, KINDS as planeKinds} from "./plane-kinds";
 
-import {bullet, lattice, plane, tank} from "../config";
+import {colors, lattice, speed} from "../config";
 import {renderLayers} from "../units/canvas";
 import {each} from "../units/helper";
 
@@ -28,13 +29,13 @@ const planeKindNumbers = Object.keys(planeKinds).reduce((prev: any, now) => {
 function createTank() {
   const tankOptions: tankConstructorOptions = {
     shape: null,
-    shootSpeed: tank.shootSpeed,
+    shootSpeed: speed.tankShoot,
     renderLayer: renderLayers.tank,
     checkLayer: renderLayers.plane,
   };
   const bulletOptions: bulletConstructorOptions = {
     kind: bulletKinds.line,
-    moveSpeed: bullet.moveSpeed,
+    moveSpeed: speed.bulletMove,
     renderLayer: renderLayers.tankBullet,
     checkLayer: renderLayers.plane,
     shape: null
@@ -45,62 +46,28 @@ function createTank() {
     [1, 0, 1, 0, 1],
     [1, 1, 1, 1, 1],
     [1, 0, 1, 0, 1]
-  ], {
-    1: '#222'
-  });
+  ], colors.tankMap);
 
   substances.tank = new Tank(tankOptions, bulletOptions);
 }
 
 function createPlane(kind, moveSpeed) {
-  const colorMap = {
-    1: '#333'
-  };
   const planeOptions: planeConstructorOptions = {
     shape: null,
     kind: kind,
     moveSpeed: moveSpeed,
-    shootSpeed: plane.shootSpeed,
+    shootSpeed: speed.planeShoot,
     renderLayer: renderLayers.plane,
     checkLayer: renderLayers.plane,
   };
   const bulletOptions: bulletConstructorOptions = {
-    moveSpeed: bullet.moveSpeed,
+    moveSpeed: speed.bulletMove,
     renderLayer: renderLayers.tankBullet,
     checkLayer: renderLayers.plane,
     kind: null,
     shape: null
   };
-
-  if (kind === planeKinds.small) {
-    planeOptions.shape = Substance.generateShape([
-      [1, 0, 1],
-      [1, 1, 1],
-      [0, 1, 0]
-    ], colorMap);
-    bulletOptions.kind = bulletKinds.line;
-  }
-  if (kind === planeKinds.medium) {
-    planeOptions.shape = Substance.generateShape([
-      [1, 0, 1, 0, 1],
-      [1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0],
-      [1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0]
-    ], colorMap);
-    bulletOptions.kind = bulletKinds.horn;
-  }
-  if (kind === planeKinds.large) {
-    planeOptions.shape = Substance.generateShape([
-      [1, 0, 1, 1, 1, 0, 1],
-      [0, 1, 1, 1, 1, 1, 0],
-      [1, 0, 1, 1, 1, 0, 1],
-      [0, 1, 1, 1, 1, 1, 0],
-      [0, 0, 1, 1, 1, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0]
-    ], colorMap);
-    bulletOptions.kind = bulletKinds.horn;
-  }
+  handleOptions(kind, planeOptions, bulletOptions);
 
   const newPlane = new Plane(planeOptions, bulletOptions);
 
@@ -140,7 +107,7 @@ function run() {
   substances.planes = substances.planes.filter(item => {
     item.run();
 
-    if(item.status !== substanceStates.normal){
+    if (item.status !== substanceStates.normal) {
       planeKindNumbers[item.kind] -= 1;
 
       return false;

@@ -2,12 +2,8 @@ import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedT
 import {lattice} from '../config'
 import {getRandomNum} from "../units/helper";
 import {constructorOptions as bulletConstructorOptions} from './bullet'
+import {KINDS} from "./plane-kinds";
 
-enum KINDS{
-  small,
-  medium,
-  large
-}
 
 interface constructorOptions extends substanceConstructorOptions {
   kind: KINDS,
@@ -15,7 +11,7 @@ interface constructorOptions extends substanceConstructorOptions {
   shootSpeed: shootSpeedType
 }
 
-export {KINDS as planeKinds,constructorOptions as planeConstructorOptions}
+export {constructorOptions as planeConstructorOptions}
 export default class Plane extends Substance {
   readonly kind: KINDS;
   readonly shootSpeed: shootSpeedType;
