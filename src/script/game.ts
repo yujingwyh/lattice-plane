@@ -1,6 +1,5 @@
-import level from './level'
-import substance from './substance'
 import canvas from "./units/canvas";
+import control from './control/index'
 
 import {toast} from "./units/dom";
 
@@ -13,7 +12,6 @@ export default class Game {
     this.run = this.run.bind(this);
 
     canvas.init();
-    substance.createTank();
   }
 
   start() {
@@ -35,9 +33,7 @@ export default class Game {
   stop() {
     this.pause();
 
-    level.reset();
-    substance.reset();
-
+    control.reset();
     canvas.render();
 
     this.$control.eq(1).hide();
@@ -46,10 +42,7 @@ export default class Game {
   }
 
   private run() {
-    level.run();
-    substance.run();
-
-    if (substance.substances.tank.status !== substance.substanceStates.normal) {
+    if (control.run()) {
       toast('GAME OVER');
       return this.stop();
     }

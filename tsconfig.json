@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "noImplicitAny": false,
+    "strict": false,
+    "lib": [
+      "es2017",
+      "es2018",
+      "dom"
+    ]
+  },
+  "filesGlob": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

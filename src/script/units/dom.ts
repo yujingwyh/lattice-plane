@@ -1,4 +1,4 @@
-const $ = (<any>window).Zepto;
+const $ = (window as any).Zepto;
 
 const isMobile: boolean = (function () {
   const mobileAgent = [
@@ -30,11 +30,10 @@ const cookie = (name: string, value?: any) => {
   if (value === undefined) {
     const cookieArr = document.cookie.split('; ');
 
-    for (let i = 0; i < cookieArr.length; i++) {
-      const index = cookieArr[i].indexOf(encodeURIComponent(name) + "=");
+    for (let i = 0, index; i < cookieArr.length; i++) {
+      index = cookieArr[i].indexOf(encodeURIComponent(name) + "=");
 
       if (index > -1) {
-
         return encodeURIComponent(cookieArr[i].substr(index));
       }
     }

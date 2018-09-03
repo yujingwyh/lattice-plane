@@ -1,16 +1,16 @@
 import {$, isMobile, toast} from './dom'
 import {each} from './helper'
-import {lattice,colors} from '../config'
+import {colors, lattice} from '../config'
 
 const canvas = $('canvas');
 const ctx = canvas[0].getContext("2d");
 
 const renderLayers = {
-  compound: [[]],
-  tank: [[]],
-  tankBullet: [[]],
-  plane: [[]],
-  planeBullet: [[]]
+  compound: [],
+  tank: [],
+  tankBullet: [],
+  plane: [],
+  planeBullet: []
 };
 //格子开始的位置 像素
 const latticeOrigin = {
@@ -38,7 +38,7 @@ const init = () => {
   latticeOrigin.y = (height - lattice.yNumber * lattice.size) / 2;
   //初始renderLayers
   for (let x = lattice.xNumber; x > 0; x--) {
-    Object.keys(renderLayers).forEach(item=>{
+    Object.keys(renderLayers).forEach(item => {
       renderLayers[item][x] = new Array(lattice.yNumber)
     });
   }

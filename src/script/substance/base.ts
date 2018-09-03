@@ -1,7 +1,7 @@
 import {lattice} from "../config";
 import {each} from "../units/helper";
 
-type shapeType = string[][];
+type shapeType = (string | number)[][];
 type layerType = (string | number)[][];
 type moveSpeedType = number;
 type shootSpeedType = number;
@@ -22,39 +22,56 @@ interface constructorOptions {
   readonly checkLayer: layerType
 }
 
-enum STATUS {
-  normal,
-  outSide,
-  collide
-}
-
 export {shapeType, layerType, moveSpeedType, shootSpeedType, coordinateInterface, constructorOptions}
-export default class Substance {
-  readonly renderLayer: layerType;
-  readonly checkLayer: layerType;
-
-  public shape: shapeType;
-  public position: coordinateInterface;
-  public shapeSize: sizeInterface;
-  public status: STATUS;
-
+export default class Base {
   static generateShape = (shape, colorMap): shapeType => {
     return shape.map(x => x.map(y => colorMap[y] || y));
   };
+  static createLauncher = () => {
+    let count = 0;
 
-  static status = STATUS;
+    return function (this: any) {
+      count += 1;
 
-  constructor({shape, renderLayer, checkLayer}: constructorOptions) {
-    this.shape = shape;
-    this.renderLayer = renderLayer;
-    this.checkLayer = checkLayer;
+      if (count >= this.shootSpeed) {
+        count = 0;
 
-    this.status = STATUS.normal;
-    this.position = {x: 0, y: 0};
-    this.shapeSize = {
+        return true;
+      }
+      return false;
+    }
+  };
+  static calcShapeSize = (shape): sizeInterface => {
+    return {
       x: shape[0].length,
       y: shape.length
     };
+  };
+  readonly renderLayer: layerType;
+  readonly checkLayer: layerType;
+  public shapeSize: sizeInterface;
+  public position: coordinateInterface;
+
+  constructor({shape, renderLayer, checkLayer}: constructorOptions) {
+    this.position = {x: 0, y: 0};
+    this.shapeSize = {x: 0, y: 0};
+    this._shape = [[]];
+
+    this.shape = shape;
+    this.renderLayer = renderLayer;
+    this.checkLayer = checkLayer;
+  }
+
+  private _shape: shapeType;
+
+  get shape() {
+    return this._shape;
+  }
+
+  set shape(shape) {
+    this._shape = shape;
+
+    this.shapeSize = Base.calcShapeSize(shape);
   }
 
   removeFormLayer() {

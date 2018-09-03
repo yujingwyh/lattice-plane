@@ -17,7 +17,9 @@ const colors = {
   planeMap: {
     1: '#333'
   },
-  bullet: {}
+  bulletMap: {
+    1: '#555'
+  }
 };
 const speed = {
   tankShoot: 0,

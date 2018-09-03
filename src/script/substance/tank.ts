@@ -1,11 +1,12 @@
 import Substance, {constructorOptions as substanceConstructorOptions, coordinateInterface, shootSpeedType} from './base'
+import Bullet, {bulletConstructorOptions, bulletKinds} from "./bullet";
 
 import {$} from '../units/dom'
-import {pixelToCoordinate} from "../units/canvas";
-import {constructorOptions as bulletConstructorOptions} from "./bullet";
+import {colors, lattice, speed} from "../config";
+import {pixelToCoordinate, renderLayers} from "../units/canvas";
 
 interface constructorOptions extends substanceConstructorOptions {
-  readonly shootSpeed: shootSpeedType
+  shootSpeed: shootSpeedType
 }
 
 const getPosition = evt => {
@@ -17,22 +18,74 @@ const getPosition = evt => {
   });
 };
 
-export {constructorOptions as tankConstructorOptions}
 export default class Tank extends Substance {
+  static tank: Tank | null = null;
   readonly shootSpeed: shootSpeedType;
-
+  readonly launcher: () => boolean;
+  public bulletOptions: bulletConstructorOptions;
   private ableSetPosition: boolean;
   private pressPosition: coordinateInterface;
 
-  public bulletOptions: bulletConstructorOptions;
+  constructor() {
+    const tankOptions: constructorOptions = {
+      shape: null,
+      shootSpeed: speed.tankShoot,
+      renderLayer: renderLayers.tank,
+      checkLayer: renderLayers.plane,
+    };
+    const bulletOptions: bulletConstructorOptions = {
+      shape: null,
+      kind: bulletKinds.line,
+      moveSpeed: speed.bulletMove,
+      renderLayer: renderLayers.tankBullet,
+      checkLayer: renderLayers.plane
+    };
 
-  constructor(tankOptions: constructorOptions, bulletOptions: bulletConstructorOptions) {
+    tankOptions['shape'] = Substance.generateShape([
+      [0, 0, 1, 0, 0],
+      [1, 0, 1, 0, 1],
+      [1, 1, 1, 1, 1],
+      [1, 0, 1, 0, 1]
+    ], colors.tankMap);
+
     super(tankOptions);
 
     this.shootSpeed = tankOptions.shootSpeed;
-    this.ableSetPosition = false;
     this.bulletOptions = bulletOptions;
-    //监听事件
+    this.launcher = Substance.createLauncher().bind(this);
+
+    this.ableSetPosition = false;
+    this.pressPosition = {x: 0, y: 0};
+
+    this.position = {
+      x: Math.ceil((lattice.xNumber - this.shapeSize.x) / 2) + 1,
+      y: lattice.yNumber - this.shapeSize.y
+    };
+    this.addToLayer();
+    this.initEvent();
+    Tank.tank = this;
+  }
+
+  run() {
+    if (this.ableSetPosition) {
+      this.removeFormLayer();
+
+      this.position = this.getInsidePosition(
+        this.getCenterPosition(this.pressPosition)
+      );
+
+      this.addToLayer();
+    }
+
+    if (this.checkCollide()) {
+      Tank.tank = null;
+    }
+    else if (this.launcher()) {
+      new Bullet(this.bulletOptions, this);
+    }
+  }
+
+  private initEvent() {
     $(document)
       .on('touchstart', evt => {
         const position = getPosition(evt);
@@ -56,25 +109,9 @@ export default class Tank extends Substance {
 
         evt.preventDefault();
       })
-      .on('touchend', evt => {
+      .on('touchend', () => {
         this.ableSetPosition = false;
       });
-  }
-
-  run() {
-    if (this.ableSetPosition) {
-      this.removeFormLayer();
-
-      this.position = this.getInsidePosition(
-        this.getCenterPosition(this.pressPosition)
-      );
-
-      this.addToLayer();
-    }
-
-    if (this.checkCollide()) {
-      this.status = Substance.status.collide;
-    }
   }
 
   //获得居中的位置
