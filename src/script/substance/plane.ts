@@ -1,7 +1,8 @@
 import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType, shootSpeedType} from './base'
 import Bullet, {bulletConstructorOptions, bulletKinds} from './bullet'
-import {renderLayers} from "../units/canvas";
+import {planeKindCounts, substances} from "./substances";
 
+import {renderLayers} from "../units/canvas";
 import {colors, lattice, speed} from '../config'
 import {getRandomNum} from "../units/helper";
 
@@ -16,18 +17,6 @@ interface constructorOptions extends substanceConstructorOptions {
   moveSpeed: moveSpeedType,
   shootSpeed: shootSpeedType
 }
-
-interface kindCount {
-  [kind: number]: number
-}
-
-const planes: Plane[] = [];
-const planeKindCounts: kindCount = Object.keys(KINDS)
-  .reduce((prev: any, now) => {
-    !isNaN(parseInt(now)) && (prev[now] = 0);
-
-    return prev;
-  }, {});
 
 const kindHandle = (kind, planeOptions, bulletOptions) => {
   if (kind === KINDS.small) {
@@ -63,8 +52,6 @@ const kindHandle = (kind, planeOptions, bulletOptions) => {
 
 
 export default class Plane extends Substance {
-  static planes = planes;
-  static planeKindCounts = planeKindCounts;
   static planeKinds = KINDS;
   readonly kind: KINDS;
   readonly shootSpeed: shootSpeedType;
@@ -103,8 +90,8 @@ export default class Plane extends Substance {
     this.displacement = this.position.y;
 
     if (!this.checkCollide()) {
-      Plane.planes.push(this);
-      Plane.planeKindCounts[this.kind] += 1;
+      substances.planes.push(this);
+      planeKindCounts[this.kind] += 1;
     }
   }
 
@@ -117,8 +104,8 @@ export default class Plane extends Substance {
     //判断超出范围
     const insidePosition = this.getInsidePosition(this.position);
     if (this.position.x !== insidePosition.x || this.position.y !== insidePosition.y) {
-      Plane.planes = Plane.planes.filter(item => item !== this);
-      Plane.planeKindCounts[this.kind] -= 1;
+      substances.planes = substances.planes.filter(item => item !== this);
+      planeKindCounts[this.kind] -= 1;
 
       return;
     }

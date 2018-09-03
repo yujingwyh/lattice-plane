@@ -1,14 +1,8 @@
 import Tank from './tank'
 import Plane from './plane'
+import {planeKindCounts, substances} from "./substances";
 
-
-const substances = {
-  tank: Tank.tank,
-  planes: Plane.planes,
-  bullets: []
-};
-const planeKindCount = Plane.planeKindCounts;
 const PlaneKinds = Plane.planeKinds;
 
 
-export {Tank, Plane, substances, planeKindCount, PlaneKinds}
+export {Tank, Plane, substances, planeKindCounts, PlaneKinds}

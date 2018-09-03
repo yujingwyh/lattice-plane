@@ -55,7 +55,6 @@ export default class Base {
   constructor({shape, renderLayer, checkLayer}: constructorOptions) {
     this.position = {x: 0, y: 0};
     this.shapeSize = {x: 0, y: 0};
-    this._shape = [[]];
 
     this.shape = shape;
     this.renderLayer = renderLayer;

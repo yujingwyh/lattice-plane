@@ -1,5 +1,6 @@
 import Substance, {constructorOptions as substanceConstructorOptions, coordinateInterface, shootSpeedType} from './base'
 import Bullet, {bulletConstructorOptions, bulletKinds} from "./bullet";
+import {substances} from "./substances";
 
 import {$} from '../units/dom'
 import {colors, lattice, speed} from "../config";
@@ -19,7 +20,6 @@ const getPosition = evt => {
 };
 
 export default class Tank extends Substance {
-  static tank: Tank | null = null;
   readonly shootSpeed: shootSpeedType;
   readonly launcher: () => boolean;
   public bulletOptions: bulletConstructorOptions;
@@ -63,7 +63,7 @@ export default class Tank extends Substance {
     };
     this.addToLayer();
     this.initEvent();
-    Tank.tank = this;
+    substances.tank = this;
   }
 
   run() {
@@ -78,7 +78,7 @@ export default class Tank extends Substance {
     }
 
     if (this.checkCollide()) {
-      Tank.tank = null;
+      substances.tank = null;
     }
     else if (this.launcher()) {
       new Bullet(this.bulletOptions, this);

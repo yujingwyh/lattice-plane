@@ -9,7 +9,7 @@ enum KINDS {
 }
 
 interface constructorOptions extends substanceConstructorOptions {
-  shape: null,
+  shape: shapeType,
   kind: KINDS,
   moveSpeed: moveSpeedType
 }
@@ -54,7 +54,7 @@ export default class Bullet extends Substance {
   readonly moveSpeed: moveSpeedType;
 
   constructor(options: constructorOptions, source) {
-    //options.shape = getInitShape(options.kind, source);
+    options.shape = [['#333']];
     super(options)
 
   }
