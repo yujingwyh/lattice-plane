@@ -1,4 +1,5 @@
 import canvas from "./units/canvas";
+import score from './units/score'
 import control from './control/index'
 
 import {toast} from "./units/dom";
@@ -34,6 +35,7 @@ export default class Game {
     this.pause();
 
     control.reset();
+    score.reset();
     canvas.render();
 
     this.$control.eq(1).hide();

@@ -27,50 +27,24 @@ export default class Base {
   static generateShape = (shape, colorMap): shapeType => {
     return shape.map(x => x.map(y => colorMap[y] || y));
   };
-  static createLauncher = () => {
-    let count = 0;
 
-    return function (this: any) {
-      count += 1;
-
-      if (count >= this.shootSpeed) {
-        count = 0;
-
-        return true;
-      }
-      return false;
-    }
-  };
-  static calcShapeSize = (shape): sizeInterface => {
-    return {
-      x: shape[0].length,
-      y: shape.length
-    };
-  };
   readonly renderLayer: layerType;
   readonly checkLayer: layerType;
+  public shape: shapeType;
   public shapeSize: sizeInterface;
   public position: coordinateInterface;
 
   constructor({shape, renderLayer, checkLayer}: constructorOptions) {
     this.position = {x: 0, y: 0};
-    this.shapeSize = {x: 0, y: 0};
+
 
     this.shape = shape;
+    this.shapeSize = {
+      x: shape[0].length,
+      y: shape.length
+    };
     this.renderLayer = renderLayer;
     this.checkLayer = checkLayer;
-  }
-
-  private _shape: shapeType;
-
-  get shape() {
-    return this._shape;
-  }
-
-  set shape(shape) {
-    this._shape = shape;
-
-    this.shapeSize = Base.calcShapeSize(shape);
   }
 
   removeFormLayer() {

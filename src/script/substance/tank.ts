@@ -1,5 +1,5 @@
 import Substance, {constructorOptions as substanceConstructorOptions, coordinateInterface, shootSpeedType} from './base'
-import Bullet, {bulletConstructorOptions, bulletKinds} from "./bullet";
+import {bulletKinds, bulletOptionsInterface, createLauncher} from "./bullet";
 import {substances} from "./substances";
 
 import {$} from '../units/dom'
@@ -20,9 +20,10 @@ const getPosition = evt => {
 };
 
 export default class Tank extends Substance {
+  readonly isTank: boolean;
   readonly shootSpeed: shootSpeedType;
-  readonly launcher: () => boolean;
-  public bulletOptions: bulletConstructorOptions;
+  readonly launcher: () => void;
+  public bulletOptions: bulletOptionsInterface;
   private ableSetPosition: boolean;
   private pressPosition: coordinateInterface;
 
@@ -33,10 +34,11 @@ export default class Tank extends Substance {
       renderLayer: renderLayers.tank,
       checkLayer: renderLayers.plane,
     };
-    const bulletOptions: bulletConstructorOptions = {
+    const bulletOptions: bulletOptionsInterface = {
+      direction: null,
+      source: null,
       shape: null,
       kind: bulletKinds.line,
-      moveSpeed: speed.bulletMove,
       renderLayer: renderLayers.tankBullet,
       checkLayer: renderLayers.plane
     };
@@ -50,9 +52,10 @@ export default class Tank extends Substance {
 
     super(tankOptions);
 
+    this.isTank = true;
     this.shootSpeed = tankOptions.shootSpeed;
     this.bulletOptions = bulletOptions;
-    this.launcher = Substance.createLauncher().bind(this);
+    this.launcher = createLauncher().bind(this);
 
     this.ableSetPosition = false;
     this.pressPosition = {x: 0, y: 0};
@@ -78,11 +81,15 @@ export default class Tank extends Substance {
     }
 
     if (this.checkCollide()) {
-      substances.tank = null;
+      return this.destroy();
     }
-    else if (this.launcher()) {
-      new Bullet(this.bulletOptions, this);
-    }
+
+    this.launcher();
+  }
+
+  destroy() {
+    substances.tank = null;
+    substances.bullets.forEach(item => item.source === this && item.destroy());
   }
 
   private initEvent() {

@@ -1,5 +1,5 @@
-import {Plane, planeKindCounts, PlaneKinds, substances, Tank} from "../substance/index";
-import score from "./score";
+import {planeKindCounts, substances, Tank} from "../substance/index";
+import leave from './leave';
 
 import {lattice} from "../config";
 import {each} from "../units/helper";
@@ -10,15 +10,13 @@ let count = 0;
 const run = () => {
   count++;
 
-  if (planeKindCounts[PlaneKinds.small] < 2) {
-    new Plane(PlaneKinds.small, 0.2);
-  }
-  //run bullet
-  substances.bullets.forEach(item => item.run());
-  //run plane
-  substances.planes.forEach(item => item.run());
+  leave(count);
   //run tank
   substances.tank.run();
+  //run plane
+  substances.planes.forEach(item => item.run());
+  //run bullet
+  substances.bullets.forEach(item => item.run());
 
   return substances.tank === null;
 };
@@ -40,8 +38,6 @@ const reset = () => {
   Object.keys(planeKindCounts).forEach(item => {
     planeKindCounts[item] = 0;
   });
-
-  score.reset();
 };
 
 export default {

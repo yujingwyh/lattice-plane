@@ -22,9 +22,9 @@ const colors = {
   }
 };
 const speed = {
-  tankShoot: 0,
-  planeShoot: 0,
-  bulletMove: 0
+  tankShoot: 80,
+  planeShoot: 100,
+  bulletMove: 0.3
 };
 
 

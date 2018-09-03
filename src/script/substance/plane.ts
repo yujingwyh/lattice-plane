@@ -1,5 +1,5 @@
 import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType, shootSpeedType} from './base'
-import Bullet, {bulletConstructorOptions, bulletKinds} from './bullet'
+import {bulletKinds, bulletOptionsInterface, createLauncher} from './bullet'
 import {planeKindCounts, substances} from "./substances";
 
 import {renderLayers} from "../units/canvas";
@@ -56,8 +56,8 @@ export default class Plane extends Substance {
   readonly kind: KINDS;
   readonly shootSpeed: shootSpeedType;
   readonly moveSpeed: moveSpeedType;
-  readonly launcher: () => boolean;
-  readonly bulletOptions: bulletConstructorOptions;
+  readonly launcher: () => void;
+  readonly bulletOptions: bulletOptionsInterface;
   private displacement: number;
 
   constructor(kind, moveSpeed) {
@@ -69,12 +69,13 @@ export default class Plane extends Substance {
       renderLayer: renderLayers.plane,
       checkLayer: renderLayers.plane,
     };
-    const bulletOptions: bulletConstructorOptions = {
+    const bulletOptions: bulletOptionsInterface = {
       shape: null,
       kind: null,
-      moveSpeed: speed.bulletMove,
-      renderLayer: renderLayers.tankBullet,
-      checkLayer: renderLayers.plane
+      direction: null,
+      source: null,
+      renderLayer: renderLayers.planeBullet,
+      checkLayer: renderLayers.tank
     };
     kindHandle(kind, planeOptions, bulletOptions);
 
@@ -85,7 +86,7 @@ export default class Plane extends Substance {
     this.shootSpeed = planeOptions.shootSpeed;
     this.bulletOptions = bulletOptions;
 
-    this.launcher = Substance.createLauncher().bind(this);
+    this.launcher = createLauncher().bind(this);
     this.position = this.getInitPosition();
     this.displacement = this.position.y;
 
@@ -104,10 +105,7 @@ export default class Plane extends Substance {
     //判断超出范围
     const insidePosition = this.getInsidePosition(this.position);
     if (this.position.x !== insidePosition.x || this.position.y !== insidePosition.y) {
-      substances.planes = substances.planes.filter(item => item !== this);
-      planeKindCounts[this.kind] -= 1;
-
-      return;
+      return this.destroy();
     }
     //判断碰到其他飞机
     if (this.checkCollide()) {
@@ -117,9 +115,14 @@ export default class Plane extends Substance {
 
     this.addToLayer();
 
-    if (this.launcher()) {
-      new Bullet(this.bulletOptions, this);
-    }
+    this.launcher();
+  }
+
+  destroy() {
+    this.removeFormLayer();
+    substances.planes = substances.planes.filter(item => item !== this);
+    substances.bullets.forEach(item => item.source === this && item.destroy());
+    planeKindCounts[this.kind] -= 1;
   }
 
   private getInitPosition() {
