@@ -4,15 +4,20 @@ import {colors, lattice} from '../config'
 
 const canvas = $('canvas');
 const ctx = canvas[0].getContext("2d");
-
+//渲染层
 const renderLayers = {
+  //合并在一起的层
   compound: [],
+  //坦克层
   tank: [],
+  //坦克子弹层
   tankBullet: [],
+  //飞机层
   plane: [],
+  //飞机子弹层
   planeBullet: []
 };
-//格子开始的位置 像素
+//格子开始的位置，单位像素
 const latticeOrigin = {
   x: 0,
   y: 0
@@ -50,6 +55,7 @@ const init = () => {
     return toast('您的屏幕太小', {time: 0});
   }
 };
+//渲染格子
 const render = () => {
   const actualSize = lattice.size - lattice.space;
   const eachStart = {x: 1, y: 1};
@@ -75,9 +81,7 @@ const render = () => {
     }
   });
 };
-/**
- * 像素转格子位置
- */
+//像素单位转格子单位
 const pixelToCoordinate = (pixel) => {
   const size = lattice.size;
 

@@ -59,7 +59,7 @@ class Bullet extends Substance {
     if (this.checkCollide()) {
       if ((this.source as any).isTank) {
         const plane = this.getCollidePlane();
-        score.add(plane);
+        score.add(plane.getScore());
         plane.destroy();
       }
       else {

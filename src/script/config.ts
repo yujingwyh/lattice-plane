@@ -22,10 +22,12 @@ const colors = {
   }
 };
 const speed = {
+  //坦克射击速度
   tankShoot: 80,
+  //飞机射击速度
   planeShoot: 100,
+  //子弹移动速度
   bulletMove: 0.3
 };
-
 
 export {lattice, colors, speed}

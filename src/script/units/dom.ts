@@ -1,5 +1,5 @@
 const $ = (window as any).Zepto;
-
+//是否移动端
 const isMobile: boolean = (function () {
   const mobileAgent = [
     'phone', 'pad', 'pod', 'iPhone', 'iPod', 'ios', 'iPad',
@@ -9,7 +9,7 @@ const isMobile: boolean = (function () {
 
   return !!mobileAgent.filter(item => navigator.userAgent.indexOf(item) > -1).length
 }());
-
+//提示对话框
 const toast = (text: string, {
   callback = null,
   time = 3000
@@ -25,7 +25,7 @@ const toast = (text: string, {
     callback && callback()
   }, time)
 };
-
+//cookie封装
 const cookie = (name: string, value?: any) => {
   if (value === undefined) {
     const cookieArr = document.cookie.split('; ');

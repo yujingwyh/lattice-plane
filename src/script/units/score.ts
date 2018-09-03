@@ -21,12 +21,14 @@ class Score {
     $dom.eq(0).text(this._score);
   }
 
+  //重置
   reset() {
     this.score = 0;
   }
 
-  add(plane) {
-    this.score += 3;
+  //添加
+  add(score) {
+    this.score += score;
 
     this.maxScore = Math.max(this.maxScore, this.score);
     $dom.eq(1).text(this.maxScore);

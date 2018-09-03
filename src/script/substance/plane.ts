@@ -125,6 +125,9 @@ export default class Plane extends Substance {
     planeKindCounts[this.kind] -= 1;
   }
 
+  getScore(){
+    return 33;
+  }
   private getInitPosition() {
     return {
       x: getRandomNum(1, lattice.xNumber - this.shapeSize.x + 1),
