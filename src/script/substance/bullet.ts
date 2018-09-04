@@ -11,7 +11,6 @@ type directionType = 'top-left' |
   'bottom-left' |
   'bottom-center' |
   'bottom-right';
-
 interface constructorOptions extends substanceConstructorOptions {
   shape: null,
   direction: directionType,
@@ -32,6 +31,7 @@ class Bullet extends Substance {
     this.moveSpeed = speed.bulletMove;
     this.direction = options.direction;
     this.source = options.source;
+
     //初始位置
     this.position = this.getInitPosition();
     //判断超出范围
@@ -39,7 +39,6 @@ class Bullet extends Substance {
     if (this.position.x === insidePosition.x && this.position.y === insidePosition.y) {
       this.displacementX = this.position.x;
       this.displacementY = this.position.y;
-
       substances.bullets.push(this);
     }
   }
@@ -68,7 +67,6 @@ class Bullet extends Substance {
 
       return this.destroy();
     }
-
     this.addToLayer();
   }
 

@@ -5,3 +5,6 @@
 
 ## 截图
 ![eleme.gif](screen.png)
+
+## 待处理
+* 对substance的储存采用对象池

@@ -9,8 +9,8 @@
     "url": "https://github.com/yujingwyh/lattice-plane"
   },
   "scripts": {
-    "dev": "node ./node_modules/parcel-bundler/bin/cli start ./src/index.html -p 3111",
-    "build": ""
+    "dev": "parcel start ./src/index.html -p 3111",
+    "build": "parcel build ./src/index.html"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"

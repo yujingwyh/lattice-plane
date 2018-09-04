@@ -28,7 +28,7 @@ const kindHandle = (kind, planeOptions, bulletOptions) => {
       [0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 1, 0, 0, 0]
     ], colors.planeMap);
-    bulletOptions.kind = bulletKinds.line;
+    bulletOptions.kind = bulletKinds.horn;
   }
   if (kind === KINDS.medium) {
     planeOptions.shape = Substance.generateShape([
@@ -120,7 +120,7 @@ export default class Plane extends Substance {
   destroy() {
     this.removeFormLayer();
     substances.planes = substances.planes.filter(item => item !== this);
-    substances.bullets.forEach((item, index) => {
+    substances.bullets.forEach(item => {
       if (item.source === this) {
         item.destroy();
       }

@@ -8,7 +8,7 @@ const maxCount = leave.time * 60 * 60;
 const planeIncreaseInterval = 20 * 60;
 const mostPlaneNum = 20;
 const bufferPlaneCount = 40 * 60;
-const planeNumMiddle = (maxCount - bufferPlaneCount) / (mostPlaneNum * mostPlaneNum)
+const planeNumMiddle = (maxCount - bufferPlaneCount) / (mostPlaneNum * mostPlaneNum);
 
 const main = count => {
   if (count > maxCount) {

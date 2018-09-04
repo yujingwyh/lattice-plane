@@ -52,7 +52,7 @@ export default class Base {
 
     each(position, this.shapeSize, (x, y) => {
       this.shape[y - position.y][x - position.x] && (this.renderLayer[x][y] = 0);
-    })
+    });
   }
 
   //添加到渲染中
