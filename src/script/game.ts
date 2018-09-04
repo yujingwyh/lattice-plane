@@ -2,8 +2,6 @@ import canvas from "./units/canvas";
 import score from './units/score'
 import control from './control/index'
 
-import {toast} from "./units/dom";
-
 export default class Game {
   private timer;
   private $control;
@@ -45,7 +43,6 @@ export default class Game {
 
   private run() {
     if (control.run()) {
-      toast('GAME OVER');
       return this.stop();
     }
     //render

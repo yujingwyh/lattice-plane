@@ -25,16 +25,17 @@ const toast = (text: string, {
     callback && callback()
   }, time)
 };
-//cookie封装
+//cookie简单封装
 const cookie = (name: string, value?: any) => {
   if (value === undefined) {
     const cookieArr = document.cookie.split('; ');
 
-    for (let i = 0, index; i < cookieArr.length; i++) {
-      index = cookieArr[i].indexOf(encodeURIComponent(name) + "=");
+    for (let i = 0, item, index; i < cookieArr.length; i++) {
+      item = cookieArr[i];
+      index = item.indexOf(encodeURIComponent(name) + "=");
 
       if (index > -1) {
-        return encodeURIComponent(cookieArr[i].substr(index));
+        return encodeURIComponent(item.substr(item.indexOf('=') + 1));
       }
     }
 

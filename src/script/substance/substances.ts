@@ -1,10 +1,6 @@
 import Tank from "./tank";
 import Plane from "./plane";
-import Bullet from "./bullet";
-
-interface planeKindCountsInterface {
-  [kind: number]: number
-}
+import {Bullet} from "./bullet";
 
 interface substancesInterface {
   tank: null | Tank,
@@ -12,12 +8,6 @@ interface substancesInterface {
   bullets: Bullet[]
 }
 
-const planeKindCounts: planeKindCountsInterface = Object.keys(Plane.planeKinds)
-  .reduce((prev: any, now) => {
-    !isNaN(parseInt(now)) && (prev[now] = 0);
-
-    return prev;
-  }, {});
 const substances: substancesInterface = {
   tank: null,
   planes: [],
@@ -25,4 +15,4 @@ const substances: substancesInterface = {
 };
 
 
-export {substances, planeKindCounts}
+export default substances

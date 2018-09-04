@@ -23,11 +23,19 @@ const colors = {
 };
 const speed = {
   //坦克射击速度
-  tankShoot: 80,
+  tankShoot: 160,
   //飞机射击速度
   planeShoot: 100,
   //子弹移动速度
-  bulletMove: 0.3
+  bulletMove: 0.3,
+  //飞机最小移动速度
+  planeMinMove: 0.2,
+  //飞机最大移动速度
+  planeMaxMove: 0.2,
+};
+const leave = {
+  //游戏终止时长，单位分钟
+  time: 10
 };
 
-export {lattice, colors, speed}
+export {lattice, colors, speed, leave}

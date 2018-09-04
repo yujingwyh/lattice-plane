@@ -31,6 +31,7 @@ class Score {
     this.score += score;
 
     this.maxScore = Math.max(this.maxScore, this.score);
+    cookie('maxScore', this.maxScore);
     $dom.eq(1).text(this.maxScore);
   }
 }

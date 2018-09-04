@@ -1,5 +1,5 @@
 import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType} from './base'
-import {substances} from "./substances";
+import substances from "./substances";
 import {colors, speed} from "../config";
 import score from '../units/score'
 
@@ -20,9 +20,8 @@ interface constructorOptions extends substanceConstructorOptions {
 
 class Bullet extends Substance {
   readonly moveSpeed: moveSpeedType;
-
+  public source: Substance;
   private direction: directionType;
-  private source: Substance;
   private displacementX: number;
   private displacementY: number;
 
@@ -59,6 +58,7 @@ class Bullet extends Substance {
     if (this.checkCollide()) {
       if ((this.source as any).isTank) {
         const plane = this.getCollidePlane();
+
         score.add(plane.getScore());
         plane.destroy();
       }
@@ -137,9 +137,9 @@ class Bullet extends Substance {
 
 
 enum bulletKinds {
-  line,
-  horn,
-  cross
+  line = 1,
+  horn = 2,
+  cross = 4
 }
 
 interface bulletOptionsInterface extends constructorOptions {
@@ -186,4 +186,4 @@ const createLauncher = () => {
   }
 };
 
-export {bulletKinds, bulletOptionsInterface, createLauncher}
+export {Bullet, bulletKinds, bulletOptionsInterface, createLauncher}

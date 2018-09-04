@@ -24,20 +24,19 @@ interface constructorOptions {
 
 export {shapeType, layerType, moveSpeedType, shootSpeedType, coordinateInterface, constructorOptions}
 export default class Base {
+  //生成shape
   static generateShape = (shape, colorMap): shapeType => {
     return shape.map(x => x.map(y => colorMap[y] || y));
   };
 
   readonly renderLayer: layerType;
   readonly checkLayer: layerType;
-  public shape: shapeType;
-  public shapeSize: sizeInterface;
+  readonly shape: shapeType;
+  readonly shapeSize: sizeInterface;
   public position: coordinateInterface;
 
   constructor({shape, renderLayer, checkLayer}: constructorOptions) {
     this.position = {x: 0, y: 0};
-
-
     this.shape = shape;
     this.shapeSize = {
       x: shape[0].length,
@@ -47,6 +46,7 @@ export default class Base {
     this.checkLayer = checkLayer;
   }
 
+  //从渲染中移除
   removeFormLayer() {
     const position = this.position;
 
@@ -55,6 +55,7 @@ export default class Base {
     })
   }
 
+  //添加到渲染中
   addToLayer() {
     let color;
     const position = this.position;
@@ -66,6 +67,7 @@ export default class Base {
     })
   };
 
+  //获得地址（超出将以边缘为准）
   getInsidePosition(position): coordinateInterface {
     return {
       x: Math.max(Math.min(position.x, lattice.xNumber - this.shapeSize.x + 1), 1),
@@ -73,6 +75,7 @@ export default class Base {
     }
   }
 
+  //检测是否碰撞
   checkCollide(): boolean {
     const position = this.position;
 

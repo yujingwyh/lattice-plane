@@ -1,6 +1,6 @@
 import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType, shootSpeedType} from './base'
 import {bulletKinds, bulletOptionsInterface, createLauncher} from './bullet'
-import {planeKindCounts, substances} from "./substances";
+import substances from "./substances";
 
 import {renderLayers} from "../units/canvas";
 import {colors, lattice, speed} from '../config'
@@ -92,7 +92,6 @@ export default class Plane extends Substance {
 
     if (!this.checkCollide()) {
       substances.planes.push(this);
-      planeKindCounts[this.kind] += 1;
     }
   }
 
@@ -121,13 +120,21 @@ export default class Plane extends Substance {
   destroy() {
     this.removeFormLayer();
     substances.planes = substances.planes.filter(item => item !== this);
-    substances.bullets.forEach(item => item.source === this && item.destroy());
-    planeKindCounts[this.kind] -= 1;
+    substances.bullets.forEach((item, index) => {
+      if (item.source === this) {
+        item.destroy();
+      }
+    });
   }
 
-  getScore(){
-    return 33;
+  getScore() {
+    const bulletScore = this.bulletOptions.kind * 20;
+    const speedScore = this.moveSpeed * 50;
+    const acreageCcore = lattice.xNumber * lattice.yNumber / this.shapeSize.x / this.shapeSize.y;
+
+    return Math.ceil(bulletScore + speedScore + acreageCcore);
   }
+
   private getInitPosition() {
     return {
       x: getRandomNum(1, lattice.xNumber - this.shapeSize.x + 1),

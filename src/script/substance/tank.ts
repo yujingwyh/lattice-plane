@@ -1,8 +1,8 @@
 import Substance, {constructorOptions as substanceConstructorOptions, coordinateInterface, shootSpeedType} from './base'
 import {bulletKinds, bulletOptionsInterface, createLauncher} from "./bullet";
-import {substances} from "./substances";
+import substances from "./substances";
 
-import {$} from '../units/dom'
+import {$, toast} from '../units/dom'
 import {colors, lattice, speed} from "../config";
 import {pixelToCoordinate, renderLayers} from "../units/canvas";
 
@@ -88,6 +88,8 @@ export default class Tank extends Substance {
   }
 
   destroy() {
+    toast('GAME OVER');
+
     substances.tank = null;
     substances.bullets.forEach(item => item.source === this && item.destroy());
   }
