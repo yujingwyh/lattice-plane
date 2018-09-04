@@ -1,23 +1,30 @@
 import {substances, Tank} from "../substance/index";
 import leave from './leave';
 
-import {lattice} from "../config";
+import {common, lattice} from "../config";
 import {each} from "../units/helper";
 import {renderLayers} from "../units/canvas";
+import {toast} from "../units/dom";
 
 let count = 0;
 //返回是否终止
 const run = (): boolean => {
   count++;
 
-  if (leave(count)) return true;
+  leave(count);
   //run tank
   substances.tank.run();
   //run plane
   substances.planes.forEach(item => item.run());
   //run bullet
   substances.bullets.forEach(item => item.run());
+
   if (substances.tank === null) return true;
+  if (count > common.time) {
+    toast('你赢了');
+
+    return true;
+  }
 };
 const reset = () => {
   count = 0;

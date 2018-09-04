@@ -33,9 +33,10 @@ const speed = {
   //飞机最大移动速度，1/60 秒移动格子数
   planeMaxMove: 0.7,
 };
-const leave = {
-  //游戏终止时长，单位分钟
-  time: 10
+//通用配置
+const common = {
+  //游戏终止时长，单位分钟 × 60 × 60
+  time: 10 * 60 * 60
 };
 
-export {lattice, colors, speed, leave}
+export {lattice, colors, speed, common}
