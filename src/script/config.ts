@@ -22,15 +22,15 @@ const colors = {
   }
 };
 const speed = {
-  //坦克射击速度
-  tankShoot: 40,
-  //飞机射击速度
+  //坦克射击速度，速度/60秒射击一次
+  tankShoot: 45,
+  //飞机射击速度，速度/60秒射击一次
   planeShoot: 65,
-  //子弹移动速度
+  //子弹移动速度，1/60 秒移动格子数
   bulletMove: 1.2,
-  //飞机最小移动速度
+  //飞机最小移动速度，1/60 秒移动格子数
   planeMinMove: 0.05,
-  //飞机最大移动速度
+  //飞机最大移动速度，1/60 秒移动格子数
   planeMaxMove: 0.7,
 };
 const leave = {

@@ -6,8 +6,6 @@ import {$} from "./units/dom";
 $(() => {
   const $control = $('.control>span');
   const game = new Game($control);
-
-  game.stop();
   //阻止上下拉滑动
   window.addEventListener(
     'touchmove',

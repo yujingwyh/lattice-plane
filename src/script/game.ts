@@ -11,6 +11,7 @@ export default class Game {
     this.run = this.run.bind(this);
 
     canvas.init();
+    this.stop();
   }
 
   start() {
