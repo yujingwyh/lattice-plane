@@ -1,4 +1,4 @@
-import {Plane, substances} from "../substance/index";
+import {Plane, planeKinds, substances} from "../substance/index";
 
 import {toast} from "../units/dom";
 import {leave, speed} from "../config";
@@ -28,7 +28,9 @@ function getSpeed(count) {
 }
 
 function getPlaneKind(count) {
-  return getRandomNum(0, Math.min(Math.ceil(count / planeIncreaseInterval), 3) - 1)
+  const kindLength = Object.keys(planeKinds).length / 2;
+
+  return getRandomNum(0, Math.min(Math.ceil(count / planeIncreaseInterval), kindLength) - 1)
 }
 
 function getPlaneNum(count) {
