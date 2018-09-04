@@ -17,7 +17,6 @@ const run = (): boolean => {
   substances.planes.forEach(item => item.run());
   //run bullet
   substances.bullets.forEach(item => item.run());
-
   if (substances.tank === null) return true;
 };
 const reset = () => {

@@ -21,9 +21,12 @@ interface constructorOptions extends substanceConstructorOptions {
 const kindHandle = (kind, planeOptions, bulletOptions) => {
   if (kind === KINDS.small) {
     planeOptions.shape = Substance.generateShape([
-      [1, 0, 1],
-      [1, 1, 1],
-      [0, 1, 0]
+      [1, 0, 1, 1, 1, 0, 1],
+      [0, 1, 1, 1, 1, 1, 0],
+      [1, 0, 1, 1, 1, 0, 1],
+      [0, 1, 1, 1, 1, 1, 0],
+      [0, 0, 1, 1, 1, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0]
     ], colors.planeMap);
     bulletOptions.kind = bulletKinds.line;
   }
@@ -39,14 +42,11 @@ const kindHandle = (kind, planeOptions, bulletOptions) => {
   }
   if (kind === KINDS.large) {
     planeOptions.shape = Substance.generateShape([
-      [1, 0, 1, 1, 1, 0, 1],
-      [0, 1, 1, 1, 1, 1, 0],
-      [1, 0, 1, 1, 1, 0, 1],
-      [0, 1, 1, 1, 1, 1, 0],
-      [0, 0, 1, 1, 1, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0]
+      [1, 0, 1],
+      [1, 1, 1],
+      [0, 1, 0]
     ], colors.planeMap);
-    bulletOptions.kind = bulletKinds.horn;
+    bulletOptions.kind = bulletKinds.cross;
   }
 };
 
