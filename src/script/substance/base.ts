@@ -82,9 +82,7 @@ export default class Base {
     let isCollide = false;
 
     each(position, this.shapeSize, (x, y) => {
-      if (this.shape[y - position.y][x - position.x] && this.checkLayer[x][y]) {
-        isCollide = true;
-      }
+      isCollide = isCollide || !!(this.shape[y - position.y][x - position.x] && this.checkLayer[x][y])
     });
 
     return isCollide;

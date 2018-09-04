@@ -11,6 +11,7 @@ type directionType = 'top-left' |
   'bottom-left' |
   'bottom-center' |
   'bottom-right';
+
 interface constructorOptions extends substanceConstructorOptions {
   shape: null,
   direction: directionType,
@@ -19,10 +20,10 @@ interface constructorOptions extends substanceConstructorOptions {
 
 class Bullet extends Substance {
   readonly moveSpeed: moveSpeedType;
-  public source: Substance;
   private direction: directionType;
   private displacementX: number;
   private displacementY: number;
+  public source: Substance;
 
   constructor(options: constructorOptions) {
     (options as any).shape = Substance.generateShape([[1]], colors.bulletMap);
@@ -51,7 +52,7 @@ class Bullet extends Substance {
     //判断超出范围
     const insidePosition = this.getInsidePosition(this.position);
     if (this.position.x !== insidePosition.x || this.position.y !== insidePosition.y) {
-      return substances.bullets = substances.bullets.filter(item => item !== this);
+      return this.destroy(false);
     }
     //判断击杀
     if (this.checkCollide()) {
@@ -65,13 +66,13 @@ class Bullet extends Substance {
         substances.tank.destroy();
       }
 
-      return this.destroy();
+      return this.destroy(false);
     }
     this.addToLayer();
   }
 
-  destroy() {
-    this.removeFormLayer();
+  destroy(needRemoveLayer = true) {
+    needRemoveLayer && this.removeFormLayer();
     substances.bullets = substances.bullets.filter(item => item !== this);
   }
 
@@ -133,7 +134,7 @@ class Bullet extends Substance {
   }
 }
 
-
+//对应的是分数比例
 enum bulletKinds {
   line = 1,
   horn = 2,
@@ -148,7 +149,7 @@ interface bulletOptionsInterface extends constructorOptions {
 
 const createLauncher = () => {
   let count = 0;
-  //要修复this
+  //要bind this
   return function (this: any) {
     count += 1;
 

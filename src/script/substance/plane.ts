@@ -104,7 +104,7 @@ export default class Plane extends Substance {
     //判断超出范围
     const insidePosition = this.getInsidePosition(this.position);
     if (this.position.x !== insidePosition.x || this.position.y !== insidePosition.y) {
-      return this.destroy();
+      return this.destroy(false);
     }
     //判断碰到其他飞机
     if (this.checkCollide()) {
@@ -113,26 +113,21 @@ export default class Plane extends Substance {
     }
 
     this.addToLayer();
-
     this.launcher();
   }
 
-  destroy() {
-    this.removeFormLayer();
+  destroy(needRemoveLayer = true) {
+    needRemoveLayer && this.removeFormLayer();
     substances.planes = substances.planes.filter(item => item !== this);
-    substances.bullets.forEach(item => {
-      if (item.source === this) {
-        item.destroy();
-      }
-    });
+    substances.bullets.forEach(item => item.source === this && item.destroy());
   }
 
   getScore() {
     const bulletScore = this.bulletOptions.kind * 20;
     const speedScore = this.moveSpeed * 50;
-    const acreageCcore = lattice.xNumber * lattice.yNumber / this.shapeSize.x / this.shapeSize.y;
+    const acreageScore = lattice.xNumber * lattice.yNumber / this.shapeSize.x / this.shapeSize.y;
 
-    return Math.ceil(bulletScore + speedScore + acreageCcore);
+    return Math.ceil(bulletScore + speedScore + acreageScore);
   }
 
   private getInitPosition() {
