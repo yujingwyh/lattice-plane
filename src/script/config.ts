@@ -23,9 +23,9 @@ const colors = {
 };
 const speed = {
   //坦克射击速度，速度/60秒射击一次
-  tankShoot: 45,
+  tankShoot: 30,
   //飞机射击速度，速度/60秒射击一次
-  planeShoot: 65,
+  planeShoot: 45,
   //子弹移动速度，1/60 秒移动格子数
   bulletMove: 1.2,
   //飞机最小移动速度，1/60 秒移动格子数
