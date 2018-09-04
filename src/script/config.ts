@@ -27,7 +27,7 @@ const speed = {
   //飞机射击速度，速度/60秒射击一次
   planeShoot: 45,
   //子弹移动速度，1/60 秒移动格子数
-  bulletMove: 1.2,
+  bulletMove: 2,
   //飞机最小移动速度，1/60 秒移动格子数
   planeMinMove: 0.05,
   //飞机最大移动速度，1/60 秒移动格子数
