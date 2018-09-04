@@ -12,13 +12,13 @@ const lattice = {
 const colors = {
   background: '#969e89',
   tankMap: {
-    1: '#555'
+    1: '#333'
   },
   planeMap: {
-    1: '#555'
+    1: '#333'
   },
   bulletMap: {
-    1: '#333'
+    1: '#111'
   }
 };
 const speed = {
