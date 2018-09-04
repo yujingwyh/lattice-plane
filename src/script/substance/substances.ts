@@ -3,7 +3,7 @@ import Plane from "./plane";
 import {Bullet} from "./bullet";
 
 interface substancesInterface {
-  tank: null | Tank,
+  tank: Tank,
   planes: Plane[],
   bullets: Bullet[]
 }

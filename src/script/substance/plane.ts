@@ -118,7 +118,8 @@ export default class Plane extends Substance {
 
   destroy(needRemoveLayer = true) {
     needRemoveLayer && this.removeFormLayer();
-    substances.planes = substances.planes.filter(item => item !== this);
+    this.status = Substance.status.destroy;
+
     substances.bullets.forEach(item => item.source === this && item.destroy());
   }
 

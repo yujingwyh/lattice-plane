@@ -2,7 +2,7 @@ import Substance, {constructorOptions as substanceConstructorOptions, coordinate
 import {bulletKinds, bulletOptionsInterface, createLauncher} from "./bullet";
 import substances from "./substances";
 
-import {$, toast} from '../units/dom'
+import {$} from '../units/dom'
 import {colors, lattice, speed} from "../config";
 import {pixelToCoordinate, renderLayers} from "../units/canvas";
 
@@ -60,13 +60,16 @@ export default class Tank extends Substance {
     this.ableSetPosition = false;
     this.pressPosition = {x: 0, y: 0};
 
+    this.initEvent();
+  }
+
+  reset() {
+    this.status = Substance.status.normal;
     this.position = {
       x: Math.ceil((lattice.xNumber - this.shapeSize.x) / 2) + 1,
       y: lattice.yNumber - this.shapeSize.y
     };
     this.addToLayer();
-    this.initEvent();
-    substances.tank = this;
   }
 
   run() {
@@ -88,9 +91,8 @@ export default class Tank extends Substance {
   }
 
   destroy() {
-    toast('GAME OVER');
-
-    substances.tank = null;
+    this.removeFormLayer();
+    this.status = Substance.status.destroy;
     substances.bullets.forEach(item => item.source === this && item.destroy());
   }
 
@@ -98,6 +100,7 @@ export default class Tank extends Substance {
     $(document)
       .on('touchstart', evt => {
         const position = getPosition(evt);
+
         //手指在坦克上
         if (
           position.x >= this.position.x &&

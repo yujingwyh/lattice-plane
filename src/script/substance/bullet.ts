@@ -20,10 +20,10 @@ interface constructorOptions extends substanceConstructorOptions {
 
 class Bullet extends Substance {
   readonly moveSpeed: moveSpeedType;
+  public source: Substance;
   private direction: directionType;
   private displacementX: number;
   private displacementY: number;
-  public source: Substance;
 
   constructor(options: constructorOptions) {
     (options as any).shape = Substance.generateShape([[1]], colors.bulletMap);
@@ -72,8 +72,8 @@ class Bullet extends Substance {
   }
 
   destroy(needRemoveLayer = true) {
+    this.status = Substance.status.destroy;
     needRemoveLayer && this.removeFormLayer();
-    substances.bullets = substances.bullets.filter(item => item !== this);
   }
 
 

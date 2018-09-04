@@ -22,17 +22,24 @@ interface constructorOptions {
   readonly checkLayer: layerType
 }
 
+enum status {
+  normal,
+  destroy
+}
+
 export {shapeType, layerType, moveSpeedType, shootSpeedType, coordinateInterface, constructorOptions}
 export default class Base {
   //生成shape
   static generateShape = (shape, colorMap): shapeType => {
     return shape.map(x => x.map(y => colorMap[y] || y));
   };
+  static status = status;
 
   readonly renderLayer: layerType;
   readonly checkLayer: layerType;
   readonly shape: shapeType;
   readonly shapeSize: sizeInterface;
+  public status: status;
   public position: coordinateInterface;
 
   constructor({shape, renderLayer, checkLayer}: constructorOptions) {
@@ -44,15 +51,18 @@ export default class Base {
     };
     this.renderLayer = renderLayer;
     this.checkLayer = checkLayer;
+    this.status = status.normal;
   }
 
   //从渲染中移除
   removeFormLayer() {
     const position = this.position;
 
-    each(position, this.shapeSize, (x, y) => {
-      this.shape[y - position.y][x - position.x] && (this.renderLayer[x][y] = 0);
-    });
+    if(this.status === status.normal){
+      each(position, this.shapeSize, (x, y) => {
+        this.shape[y - position.y][x - position.x] && (this.renderLayer[x][y] = 0);
+      });
+    }
   }
 
   //添加到渲染中
@@ -60,11 +70,12 @@ export default class Base {
     let color;
     const position = this.position;
 
-    each(position, this.shapeSize, (x, y) => {
-      color = this.shape[y - position.y][x - position.x];
-
-      color && (this.renderLayer[x][y] = color);
-    })
+    if(this.status === status.normal){
+      each(position, this.shapeSize, (x, y) => {
+        color = this.shape[y - position.y][x - position.x];
+        color && (this.renderLayer[x][y] = color);
+      });
+    }
   };
 
   //获得地址（超出将以边缘为准）

@@ -1,4 +1,4 @@
-import {substances, Tank} from "../substance/index";
+import {status, substances, Tank} from "../substance/index";
 import leave from './leave';
 
 import {common, lattice} from "../config";
@@ -13,16 +13,26 @@ const run = (): boolean => {
 
   leave(count);
   //run tank
-  substances.tank.run();
+  substances.tank.status === status.normal && substances.tank.run();
   //run plane
-  substances.planes.forEach(item => item.run());
-  //run bullet
-  substances.bullets.forEach(item => item.run());
+  substances.planes = substances.planes.filter(item => {
+    item.status === status.normal && item.run();
 
-  if (substances.tank === null) return true;
+    return item.status === status.normal;
+  });
+  //run bullet
+  substances.bullets.forEach(item => {
+    item.status === status.normal && item.run();
+
+    return item.status === status.normal;
+  });
+
+  if (substances.tank.status === status.destroy) {
+    toast('GAME OVER');
+    return true;
+  }
   if (count > common.time) {
     toast('你赢了');
-
     return true;
   }
 };
@@ -37,7 +47,8 @@ const reset = () => {
     });
   });
 
-  new Tank();
+  substances.tank = substances.tank || new Tank();
+  substances.tank.reset();
   substances.planes = [];
   substances.bullets = [];
 };
