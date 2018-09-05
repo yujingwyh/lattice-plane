@@ -41,6 +41,6 @@ const score = new class Score {
     this.maxScore = Math.max(this.maxScore, this.score);
     cookie('maxScore', this.maxScore);
   }
-}
+};
 
 export default score;
