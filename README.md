@@ -2,6 +2,7 @@
 像素化坦克打飞机游戏
 
 ## 地址
+[点击访问](https://yujingwyh.github.io/lattice-plane/)
 
 ## 截图
 ![eleme.gif](screen.png)
