@@ -29,7 +29,7 @@ class Bullet extends Substance {
 
   constructor(options: constructorOptions) {
     (options as any).shape = Substance.generateShape([[1]], colors.bulletMap);
-    (options as any).type = substanceType.bullet;
+    (options as any).type = options.source.type === substanceType.tank ? substanceType.tankBullet : substanceType.planeBullet;
     super(options);
 
     this.moveSpeed = speed.bulletMove;
@@ -79,6 +79,8 @@ class Bullet extends Substance {
   destroy(needRemoveLayer = true) {
     this.isDestroy = true;
     needRemoveLayer && this.removeFormLayer();
+
+    pool.destroy(this);
   }
 
 

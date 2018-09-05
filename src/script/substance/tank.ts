@@ -31,8 +31,7 @@ export default class Tank extends Substance {
       shape: null,
       type: substanceType.tank,
       shootSpeed: speed.tankShoot,
-      renderLayer: renderLayers.tank,
-      checkLayer: renderLayers.plane,
+      checkLayer: renderLayers[substanceType.plane],
     };
     const bulletOptions: bulletOptionsInterface = {
       direction: null,
@@ -40,8 +39,7 @@ export default class Tank extends Substance {
       shape: null,
       type: null,
       kind: bulletKind.line,
-      renderLayer: renderLayers.tankBullet,
-      checkLayer: renderLayers.plane
+      checkLayer: renderLayers[substanceType.plane],
     };
 
     tankOptions['shape'] = Substance.generateShape([
@@ -61,6 +59,8 @@ export default class Tank extends Substance {
     this.pressPosition = {x: 0, y: 0};
 
     this.initEvent();
+    this.reset();
+    pool.add(this);
   }
 
   reset() {
@@ -94,7 +94,8 @@ export default class Tank extends Substance {
     this.removeFormLayer();
     this.isDestroy = true;
 
-    pool.get(substanceType.bullet).forEach(item => {
+    //pool.destroy(this);
+    pool.get(substanceType.tankBullet).forEach(item => {
       item.source === this && item.destroy();
     });
   }

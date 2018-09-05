@@ -1,3 +1,4 @@
+import {renderLayers} from "../units/canvas";
 import {lattice, substanceType} from "../units/config";
 import {each} from "../units/helper";
 
@@ -19,7 +20,6 @@ interface coordinateInterface {
 interface constructorOptions {
   shape: shapeType,
   type: substanceType,
-  readonly renderLayer: layerType,
   readonly checkLayer: layerType
 }
 
@@ -38,7 +38,7 @@ export default class Base {
   public isDestroy: Boolean;
   public position: coordinateInterface;
 
-  constructor({type, shape, renderLayer, checkLayer}: constructorOptions) {
+  constructor({type, shape, checkLayer}: constructorOptions) {
     this.type = type;
     this.position = {x: 0, y: 0};
     this.shape = shape;
@@ -47,7 +47,7 @@ export default class Base {
       y: shape.length
     };
 
-    this.renderLayer = renderLayer;
+    this.renderLayer = renderLayers[this.type];
     this.checkLayer = checkLayer;
 
     this.isDestroy = true;

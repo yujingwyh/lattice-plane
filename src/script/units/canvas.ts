@@ -1,6 +1,6 @@
 import {$, isMobile, toast} from './dom'
 import {each} from './helper'
-import {colors, lattice} from './config'
+import {colors, lattice, substanceType} from './config'
 
 const canvas = $('canvas');
 const ctx = canvas[0].getContext("2d");
@@ -9,13 +9,13 @@ const renderLayers = {
   //合并在一起的层
   compound: [],
   //坦克层
-  tank: [],
+  [substanceType.tank]: [],
   //坦克子弹层
-  tankBullet: [],
+  [substanceType.tankBullet]: [],
   //飞机层
-  plane: [],
+  [substanceType.plane]: [],
   //飞机子弹层
-  planeBullet: []
+  [substanceType.planeBullet]: []
 };
 //格子开始的位置，单位像素
 const latticeOrigin = {
@@ -64,10 +64,10 @@ const render = () => {
   let color, pixelX, pixelY;
 
   each(eachStart, eachSize, (x, y) => {
-    color = renderLayers.tank[x][y] ||
-      renderLayers.plane[x][y] ||
-      renderLayers.tankBullet[x][y] ||
-      renderLayers.planeBullet[x][y] ||
+    color = renderLayers[substanceType.tank][x][y] ||
+      renderLayers[substanceType.plane][x][y] ||
+      renderLayers[substanceType.tankBullet][x][y] ||
+      renderLayers[substanceType.planeBullet][x][y] ||
       colors.background;
 
     if (color !== renderLayers.compound[x][y]) {

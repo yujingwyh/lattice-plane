@@ -3,21 +3,11 @@ import {$, cookie} from './dom'
 const $dom = $('.score>span');
 
 const score = new class Score {
-  private _maxScore = 0;
-  private _score = 0;
-
   constructor() {
     this.maxScore = parseInt(cookie('maxScore')) || 0;
   }
 
-  get score() {
-    return this._score;
-  }
-
-  set score(score) {
-    this._score = score;
-    $dom.eq(0).text(score);
-  }
+  private _maxScore = 0;
 
   get maxScore() {
     return this._maxScore;
@@ -26,6 +16,17 @@ const score = new class Score {
   set maxScore(score) {
     this._maxScore = score;
     $dom.eq(1).text(score);
+  }
+
+  private _score = 0;
+
+  get score() {
+    return this._score;
+  }
+
+  set score(score) {
+    this._score = score;
+    $dom.eq(0).text(score);
   }
 
   //重置

@@ -60,8 +60,7 @@ export default class Plane extends Substance {
       kind: kind,
       moveSpeed: moveSpeed,
       shootSpeed: speed.planeShoot,
-      renderLayer: renderLayers.plane,
-      checkLayer: renderLayers.plane,
+      checkLayer: renderLayers[substanceType.plane],
     };
     const bulletOptions: bulletOptionsInterface = {
       shape: null,
@@ -69,8 +68,7 @@ export default class Plane extends Substance {
       direction: null,
       source: null,
       type: null,
-      renderLayer: renderLayers.planeBullet,
-      checkLayer: renderLayers.tank
+      checkLayer: renderLayers[substanceType.tank]
     };
     kindHandle(kind, planeOptions, bulletOptions);
 
@@ -117,7 +115,8 @@ export default class Plane extends Substance {
     needRemoveLayer && this.removeFormLayer();
     this.isDestroy = true;
 
-    pool.get(substanceType.bullet).forEach(item => {
+    pool.destroy(this);
+    pool.get(substanceType.planeBullet).forEach(item => {
       item.source === this && item.destroy();
     });
   }

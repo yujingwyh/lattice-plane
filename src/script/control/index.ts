@@ -1,4 +1,4 @@
-import {pool} from "../substance/index";
+import {pool, Tank} from "../substance/index";
 import leave from './leave';
 
 import {common, lattice, substanceType} from "../units/config";
@@ -38,7 +38,7 @@ const reset = () => {
   });
 
   pool.destroy();
-  pool.get(substanceType.tank).reset();
+  new Tank();
 };
 
 export default {

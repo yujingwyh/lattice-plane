@@ -1,5 +1,4 @@
 import Substance from './base'
-import Tank from "./tank";
 
 import {substanceType} from "../units/config";
 
@@ -40,7 +39,7 @@ const pool = new class Pool implements poolInterface {
       return this.data[substanceType.tank][0];
     }
     else if (type) {
-      return this.data[type];
+      return this.data[type] || [];
     }
     else {
       return Object.keys(this.data).map(item => this.data[item]);
@@ -49,14 +48,13 @@ const pool = new class Pool implements poolInterface {
 
   destroy(param?: substanceType | Substance) {
     if (param instanceof Substance) {
-      this.data[param.type] = this.data[param.type].filter(item => item !== param);
+      this.data[param.type].splice(this.data[param.type].indexOf(param), 1);
     }
     else if (param) {
-      this.data[param as substanceType] = [];
+      this.data[param] = [];
     }
     else {
       this.data = {};
-      this.data[substanceType.tank] = [new Tank()];
     }
   }
 };

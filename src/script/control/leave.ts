@@ -10,7 +10,7 @@ const planeNumMiddle = (common.time - bufferPlaneCount) / (mostPlaneNum * mostPl
 
 const main = count => {
   if (pool.get(substanceType.plane).length < getPlaneNum(count)) {
-    pool.add(new Plane(getPlaneKind(count), getSpeed(count)));
+    new Plane(getPlaneKind(count), getSpeed(count));
   }
 };
 
