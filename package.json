@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "parcel start ./src/index.html -p 3111",
-    "build": "parcel build ./src/index.html"
+    "build": "parcel build ./src/index.html --public-url ./"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"
