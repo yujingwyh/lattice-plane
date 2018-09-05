@@ -1,4 +1,4 @@
-import {lattice} from "../config";
+import {lattice, substanceType} from "../units/config";
 import {each} from "../units/helper";
 
 type shapeType = (string | number)[][];
@@ -18,13 +18,9 @@ interface coordinateInterface {
 
 interface constructorOptions {
   shape: shapeType,
+  type: substanceType,
   readonly renderLayer: layerType,
   readonly checkLayer: layerType
-}
-
-enum status {
-  normal,
-  destroy
 }
 
 export {shapeType, layerType, moveSpeedType, shootSpeedType, coordinateInterface, constructorOptions}
@@ -33,36 +29,37 @@ export default class Base {
   static generateShape = (shape, colorMap): shapeType => {
     return shape.map(x => x.map(y => colorMap[y] || y));
   };
-  static status = status;
 
   readonly renderLayer: layerType;
   readonly checkLayer: layerType;
   readonly shape: shapeType;
   readonly shapeSize: sizeInterface;
-  public status: status;
+  public type: substanceType;
+  public isDestroy: Boolean;
   public position: coordinateInterface;
 
-  constructor({shape, renderLayer, checkLayer}: constructorOptions) {
+  constructor({type, shape, renderLayer, checkLayer}: constructorOptions) {
+    this.type = type;
     this.position = {x: 0, y: 0};
     this.shape = shape;
     this.shapeSize = {
       x: shape[0].length,
       y: shape.length
     };
+
     this.renderLayer = renderLayer;
     this.checkLayer = checkLayer;
-    this.status = status.normal;
+
+    this.isDestroy = true;
   }
 
   //从渲染中移除
   removeFormLayer() {
     const position = this.position;
 
-    if(this.status === status.normal){
-      each(position, this.shapeSize, (x, y) => {
-        this.shape[y - position.y][x - position.x] && (this.renderLayer[x][y] = 0);
-      });
-    }
+    each(position, this.shapeSize, (x, y) => {
+      this.shape[y - position.y][x - position.x] && (this.renderLayer[x][y] = 0);
+    });
   }
 
   //添加到渲染中
@@ -70,12 +67,10 @@ export default class Base {
     let color;
     const position = this.position;
 
-    if(this.status === status.normal){
-      each(position, this.shapeSize, (x, y) => {
-        color = this.shape[y - position.y][x - position.x];
-        color && (this.renderLayer[x][y] = color);
-      });
-    }
+    each(position, this.shapeSize, (x, y) => {
+      color = this.shape[y - position.y][x - position.x];
+      color && (this.renderLayer[x][y] = color);
+    });
   };
 
   //获得地址（超出将以边缘为准）

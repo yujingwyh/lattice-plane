@@ -1,9 +1,9 @@
 import Substance, {constructorOptions as substanceConstructorOptions, coordinateInterface, shootSpeedType} from './base'
-import {bulletKinds, bulletOptionsInterface, createLauncher} from "./bullet";
-import substances from "./substances";
+import {bulletOptionsInterface, createLauncher} from "./bullet";
+import pool from "./pool";
 
 import {$} from '../units/dom'
-import {colors, lattice, speed} from "../config";
+import {bulletKind, colors, lattice, speed, substanceType} from "../units/config";
 import {pixelToCoordinate, renderLayers} from "../units/canvas";
 
 interface constructorOptions extends substanceConstructorOptions {
@@ -20,7 +20,6 @@ const getPosition = evt => {
 };
 
 export default class Tank extends Substance {
-  readonly isTank: boolean;
   readonly shootSpeed: shootSpeedType;
   readonly launcher: () => void;
   public bulletOptions: bulletOptionsInterface;
@@ -30,6 +29,7 @@ export default class Tank extends Substance {
   constructor() {
     const tankOptions: constructorOptions = {
       shape: null,
+      type: substanceType.tank,
       shootSpeed: speed.tankShoot,
       renderLayer: renderLayers.tank,
       checkLayer: renderLayers.plane,
@@ -38,7 +38,8 @@ export default class Tank extends Substance {
       direction: null,
       source: null,
       shape: null,
-      kind: bulletKinds.line,
+      type: null,
+      kind: bulletKind.line,
       renderLayer: renderLayers.tankBullet,
       checkLayer: renderLayers.plane
     };
@@ -52,7 +53,6 @@ export default class Tank extends Substance {
 
     super(tankOptions);
 
-    this.isTank = true;
     this.shootSpeed = tankOptions.shootSpeed;
     this.bulletOptions = bulletOptions;
     this.launcher = createLauncher().bind(this);
@@ -64,7 +64,7 @@ export default class Tank extends Substance {
   }
 
   reset() {
-    this.status = Substance.status.normal;
+    this.isDestroy = false;
     this.position = {
       x: Math.ceil((lattice.xNumber - this.shapeSize.x) / 2) + 1,
       y: lattice.yNumber - this.shapeSize.y
@@ -92,8 +92,11 @@ export default class Tank extends Substance {
 
   destroy() {
     this.removeFormLayer();
-    this.status = Substance.status.destroy;
-    substances.bullets.forEach(item => item.source === this && item.destroy());
+    this.isDestroy = true;
+
+    pool.get(substanceType.bullet).forEach(item => {
+      item.source === this && item.destroy();
+    });
   }
 
   private initEvent() {

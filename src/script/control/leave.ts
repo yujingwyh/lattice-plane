@@ -1,5 +1,6 @@
-import {Plane, planeKinds, substances} from "../substance/index";
-import {common, speed} from "../config";
+import {Plane, pool} from "../substance/index";
+
+import {common, planeKind, speed, substanceType} from "../units/config";
 import {getRandomNum} from "../units/helper";
 
 const planeIncreaseInterval = 20 * 60;
@@ -8,8 +9,8 @@ const bufferPlaneCount = 40 * 60;
 const planeNumMiddle = (common.time - bufferPlaneCount) / (mostPlaneNum * mostPlaneNum);
 
 const main = count => {
-  if (substances.planes.length < getPlaneNum(count)) {
-    new Plane(getPlaneKind(count), getSpeed(count));
+  if (pool.get(substanceType.plane).length < getPlaneNum(count)) {
+    pool.add(new Plane(getPlaneKind(count), getSpeed(count)));
   }
 };
 
@@ -18,7 +19,7 @@ function getSpeed(count) {
 }
 
 function getPlaneKind(count) {
-  const kindLength = Object.keys(planeKinds).length / 2;
+  const kindLength = Object.keys(planeKind).length / 2;
 
   return getRandomNum(0, Math.min(Math.ceil(count / planeIncreaseInterval), kindLength) - 1)
 }

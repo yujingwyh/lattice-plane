@@ -1,9 +1,4 @@
-import Substance from './base'
-import Tank from './tank'
+import pool from './pool'
 import Plane from './plane'
-import substances from "./substances";
 
-const planeKinds = Plane.planeKinds;
-const status = Substance.status;
-
-export {Tank, Plane, substances, status, planeKinds}
+export {pool, Plane}

@@ -1,25 +1,19 @@
 import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType, shootSpeedType} from './base'
-import {bulletKinds, bulletOptionsInterface, createLauncher} from './bullet'
-import substances from "./substances";
+import {bulletOptionsInterface, createLauncher} from './bullet'
+import pool from "./pool";
 
 import {renderLayers} from "../units/canvas";
-import {colors, lattice, speed} from '../config'
+import {bulletKind, colors, lattice, planeKind, speed, substanceType} from '../units/config'
 import {getRandomNum} from "../units/helper";
 
-enum KINDS {
-  small,
-  medium,
-  large
-}
-
 interface constructorOptions extends substanceConstructorOptions {
-  kind: KINDS,
+  kind: planeKind,
   moveSpeed: moveSpeedType,
   shootSpeed: shootSpeedType
 }
 
 const kindHandle = (kind, planeOptions, bulletOptions) => {
-  if (kind === KINDS.small) {
+  if (kind === planeKind.small) {
     planeOptions.shape = Substance.generateShape([
       [1, 0, 1, 1, 1, 0, 1],
       [0, 1, 1, 1, 1, 1, 0],
@@ -28,9 +22,9 @@ const kindHandle = (kind, planeOptions, bulletOptions) => {
       [0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 1, 0, 0, 0]
     ], colors.planeMap);
-    bulletOptions.kind = bulletKinds.horn;
+    bulletOptions.kind = bulletKind.horn;
   }
-  if (kind === KINDS.medium) {
+  if (kind === planeKind.medium) {
     planeOptions.shape = Substance.generateShape([
       [1, 0, 1, 0, 1],
       [1, 1, 1, 1, 1],
@@ -38,22 +32,21 @@ const kindHandle = (kind, planeOptions, bulletOptions) => {
       [1, 1, 1, 1, 1],
       [0, 0, 1, 0, 0]
     ], colors.planeMap);
-    bulletOptions.kind = bulletKinds.horn;
+    bulletOptions.kind = bulletKind.horn;
   }
-  if (kind === KINDS.large) {
+  if (kind === planeKind.large) {
     planeOptions.shape = Substance.generateShape([
       [1, 0, 1],
       [1, 1, 1],
       [0, 1, 0]
     ], colors.planeMap);
-    bulletOptions.kind = bulletKinds.cross;
+    bulletOptions.kind = bulletKind.cross;
   }
 };
 
 
 export default class Plane extends Substance {
-  static planeKinds = KINDS;
-  readonly kind: KINDS;
+  readonly kind: planeKind;
   readonly shootSpeed: shootSpeedType;
   readonly moveSpeed: moveSpeedType;
   readonly launcher: () => void;
@@ -63,6 +56,7 @@ export default class Plane extends Substance {
   constructor(kind, moveSpeed) {
     const planeOptions: constructorOptions = {
       shape: null,
+      type: substanceType.plane,
       kind: kind,
       moveSpeed: moveSpeed,
       shootSpeed: speed.planeShoot,
@@ -74,6 +68,7 @@ export default class Plane extends Substance {
       kind: null,
       direction: null,
       source: null,
+      type: null,
       renderLayer: renderLayers.planeBullet,
       checkLayer: renderLayers.tank
     };
@@ -91,7 +86,9 @@ export default class Plane extends Substance {
     this.displacement = this.position.y;
 
     if (!this.checkCollide()) {
-      substances.planes.push(this);
+      this.isDestroy = false;
+
+      pool.add(this);
     }
   }
 
@@ -118,9 +115,11 @@ export default class Plane extends Substance {
 
   destroy(needRemoveLayer = true) {
     needRemoveLayer && this.removeFormLayer();
-    this.status = Substance.status.destroy;
+    this.isDestroy = true;
 
-    substances.bullets.forEach(item => item.source === this && item.destroy());
+    pool.get(substanceType.bullet).forEach(item => {
+      item.source === this && item.destroy();
+    });
   }
 
   getScore() {

@@ -1,6 +1,6 @@
 import {$, isMobile, toast} from './dom'
 import {each} from './helper'
-import {colors, lattice} from '../config'
+import {colors, lattice} from './config'
 
 const canvas = $('canvas');
 const ctx = canvas[0].getContext("2d");

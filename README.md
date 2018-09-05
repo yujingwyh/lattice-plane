@@ -7,4 +7,4 @@
 ![eleme.gif](screen.png)
 
 ## 待处理
-* 对substance的储存采用对象池
+* pool采用回收利用，减少引擎内存分配和垃圾回收

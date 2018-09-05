@@ -2,7 +2,7 @@ import {$, cookie} from './dom'
 
 const $dom = $('.score>span');
 
-class Score {
+const score = new class Score {
   private _maxScore = 0;
   private _score = 0;
 
@@ -41,7 +41,5 @@ class Score {
     cookie('maxScore', this.maxScore);
   }
 }
-
-const score = new Score();
 
 export default score;

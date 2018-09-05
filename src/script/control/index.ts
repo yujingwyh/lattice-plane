@@ -1,7 +1,7 @@
-import {status, substances, Tank} from "../substance/index";
+import {pool} from "../substance/index";
 import leave from './leave';
 
-import {common, lattice} from "../config";
+import {common, lattice, substanceType} from "../units/config";
 import {each} from "../units/helper";
 import {renderLayers} from "../units/canvas";
 import {toast} from "../units/dom";
@@ -12,22 +12,12 @@ const run = (): boolean => {
   count++;
 
   leave(count);
-  //run tank
-  substances.tank.status === status.normal && substances.tank.run();
-  //run plane
-  substances.planes = substances.planes.filter(item => {
-    item.status === status.normal && item.run();
+  //run
+  pool.get().forEach(item => item.forEach(substance => {
+    !substance.isDestroy && substance.run();
+  }));
 
-    return item.status === status.normal;
-  });
-  //run bullet
-  substances.bullets.forEach(item => {
-    item.status === status.normal && item.run();
-
-    return item.status === status.normal;
-  });
-
-  if (substances.tank.status === status.destroy) {
+  if (pool.get(substanceType.tank).isDestroy) {
     toast('GAME OVER');
     return true;
   }
@@ -47,10 +37,8 @@ const reset = () => {
     });
   });
 
-  substances.tank = substances.tank || new Tank();
-  substances.tank.reset();
-  substances.planes = [];
-  substances.bullets = [];
+  pool.destroy();
+  pool.get(substanceType.tank).reset();
 };
 
 export default {

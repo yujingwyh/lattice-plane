@@ -39,4 +39,24 @@ const common = {
   time: 10 * 60 * 60
 };
 
-export {lattice, colors, speed, common}
+enum substanceType{
+  tank,
+  plane,
+  bullet
+}
+enum planeKind {
+  small,
+  medium,
+  large
+}
+//对应的是分数比例
+enum bulletKind {
+  line = 1,
+  horn = 2,
+  cross = 4
+}
+
+export {
+  lattice, colors, speed, common,
+  substanceType,planeKind,bulletKind
+}

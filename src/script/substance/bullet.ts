@@ -1,6 +1,7 @@
 import Substance, {constructorOptions as substanceConstructorOptions, moveSpeedType} from './base'
-import substances from "./substances";
-import {colors, speed} from "../config";
+import pool from "./pool";
+
+import {bulletKind, colors, speed, substanceType} from "../units/config";
 import score from '../units/score'
 
 type directionType = 'top-left' |
@@ -14,6 +15,7 @@ type directionType = 'top-left' |
 
 interface constructorOptions extends substanceConstructorOptions {
   shape: null,
+  type: null,
   direction: directionType,
   source: Substance
 }
@@ -27,6 +29,7 @@ class Bullet extends Substance {
 
   constructor(options: constructorOptions) {
     (options as any).shape = Substance.generateShape([[1]], colors.bulletMap);
+    (options as any).type = substanceType.bullet;
     super(options);
 
     this.moveSpeed = speed.bulletMove;
@@ -40,7 +43,9 @@ class Bullet extends Substance {
     if (this.position.x === insidePosition.x && this.position.y === insidePosition.y) {
       this.displacementX = this.position.x;
       this.displacementY = this.position.y;
-      substances.bullets.push(this);
+
+      this.isDestroy = false;
+      pool.add(this);
     }
   }
 
@@ -56,14 +61,14 @@ class Bullet extends Substance {
     }
     //判断击杀
     if (this.checkCollide()) {
-      if ((this.source as any).isTank) {
+      if (this.source.type === substanceType.tank) {
         const plane = this.getCollidePlane();
 
         score.add(plane.getScore());
         plane.destroy();
       }
       else {
-        substances.tank.destroy();
+        pool.get(substanceType.tank).destroy();
       }
 
       return this.destroy(false);
@@ -72,7 +77,7 @@ class Bullet extends Substance {
   }
 
   destroy(needRemoveLayer = true) {
-    this.status = Substance.status.destroy;
+    this.isDestroy = true;
     needRemoveLayer && this.removeFormLayer();
   }
 
@@ -125,7 +130,7 @@ class Bullet extends Substance {
   private getCollidePlane() {
     let x, y;
 
-    return substances.planes.filter(plane => {
+    return pool.get(substanceType.plane).filter(plane => {
       x = this.position.x - plane.position.x;
       y = this.position.y - plane.position.y;
 
@@ -134,17 +139,10 @@ class Bullet extends Substance {
   }
 }
 
-//对应的是分数比例
-enum bulletKinds {
-  line = 1,
-  horn = 2,
-  cross = 4
-}
-
 interface bulletOptionsInterface extends constructorOptions {
   direction: null,
   source: null,
-  kind: bulletKinds
+  kind: bulletKind
 }
 
 const createLauncher = () => {
@@ -158,17 +156,17 @@ const createLauncher = () => {
 
       options.source = this;
       switch (options.kind) {
-        case bulletKinds.line:
-          options.direction = `${this.isTank ? 'top' : 'bottom'}-center`;
+        case bulletKind.line:
+          options.direction = `${this.type === substanceType.tank ? 'top' : 'bottom'}-center`;
           new Bullet(Object.assign(options));
           break;
-        case bulletKinds.horn:
-          options.direction = `${this.isTank ? 'top' : 'bottom'}-left`;
+        case bulletKind.horn:
+          options.direction = `${this.type === substanceType.tank ? 'top' : 'bottom'}-left`;
           new Bullet(Object.assign(options));
-          options.direction = `${this.isTank ? 'top' : 'bottom'}-right`;
+          options.direction = `${this.type === substanceType.tank ? 'top' : 'bottom'}-right`;
           new Bullet(Object.assign(options));
           break;
-        case bulletKinds.cross:
+        case bulletKind.cross:
           options.direction = 'top-left';
           new Bullet(Object.assign(options));
           options.direction = 'top-right';
@@ -185,4 +183,4 @@ const createLauncher = () => {
   }
 };
 
-export {Bullet, bulletKinds, bulletOptionsInterface, createLauncher}
+export {Bullet, bulletOptionsInterface, createLauncher}
