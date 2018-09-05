@@ -6,16 +6,19 @@ const lattice = {
   //所占的像素
   size: 8,
   //之间的间距
-  space: 2
+  space: 2,
+  //背景色
+  background: '#969e89',
 };
 
 const colors = {
-  background: '#969e89',
   tankMap: {
-    1: '#333'
+    1: lattice.background,
+    2: '#333',
   },
   planeMap: {
-    1: '#333'
+    1: lattice.background,
+    2: '#333'
   },
   bulletMap: {
     1: '#111'

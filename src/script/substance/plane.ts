@@ -15,30 +15,30 @@ interface constructorOptions extends substanceConstructorOptions {
 const kindHandle = (kind, planeOptions, bulletOptions) => {
   if (kind === planeKind.small) {
     planeOptions.shape = Substance.generateShape([
-      [1, 0, 1, 1, 1, 0, 1],
-      [0, 1, 1, 1, 1, 1, 0],
-      [1, 0, 1, 1, 1, 0, 1],
-      [0, 1, 1, 1, 1, 1, 0],
-      [0, 0, 1, 1, 1, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0]
+      [2, 0, 2, 2, 2, 0, 2],
+      [1, 2, 2, 2, 2, 2, 1],
+      [2, 2, 2, 2, 2, 2, 2],
+      [0, 2, 2, 2, 2, 2, 0],
+      [0, 0, 2, 2, 2, 0, 0],
+      [0, 0, 0, 2, 0, 0, 0]
     ], colors.planeMap);
     bulletOptions.kind = bulletKind.horn;
   }
   if (kind === planeKind.medium) {
     planeOptions.shape = Substance.generateShape([
-      [1, 0, 1, 0, 1],
-      [1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0],
-      [1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0]
+      [2, 0, 2, 0, 2],
+      [2, 2, 2, 2, 2],
+      [1, 1, 2, 1, 1],
+      [2, 2, 2, 2, 2],
+      [0, 0, 2, 0, 0]
     ], colors.planeMap);
     bulletOptions.kind = bulletKind.horn;
   }
   if (kind === planeKind.large) {
     planeOptions.shape = Substance.generateShape([
-      [1, 0, 1],
-      [1, 1, 1],
-      [0, 1, 0]
+      [2, 0, 2],
+      [2, 2, 2],
+      [0, 2, 0]
     ], colors.planeMap);
     bulletOptions.kind = bulletKind.cross;
   }
