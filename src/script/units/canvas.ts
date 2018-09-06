@@ -6,8 +6,6 @@ const canvas = $('canvas');
 const ctx = canvas[0].getContext("2d");
 //渲染层
 const renderLayers = {
-  //合并在一起的层
-  compound: [],
   //坦克层
   [substanceType.tank]: [],
   //坦克子弹层
@@ -70,15 +68,11 @@ const render = () => {
       renderLayers[substanceType.planeBullet][x][y] ||
       lattice.background;
 
-    if (color !== renderLayers.compound[x][y]) {
-      renderLayers.compound[x][y] = color;
+    pixelX = (x - 1) * lattice.size + latticeOrigin.x;
+    pixelY = (y - 1) * lattice.size + latticeOrigin.y;
 
-      pixelX = (x - 1) * lattice.size + latticeOrigin.x;
-      pixelY = (y - 1) * lattice.size + latticeOrigin.y;
-
-      ctx.fillStyle = color;
-      ctx.fillRect(pixelX, pixelY, actualSize, actualSize);
-    }
+    ctx.fillStyle = color;
+    ctx.fillRect(pixelX, pixelY, actualSize, actualSize);
   });
 };
 //像素单位转格子单位
