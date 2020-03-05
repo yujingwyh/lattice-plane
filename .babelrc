@@ -1,7 +1,15 @@
 {
   "presets": [
     [
-      "es2015"
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "corejs": 2,
+        "targets": {
+          "browsers": "ie >= 9"
+        },
+        "useBuiltIns": "entry"
+      }
     ]
   ]
 }

@@ -9,17 +9,16 @@
     "url": "https://github.com/yujingwyh/lattice-plane"
   },
   "scripts": {
-    "dev": "parcel start ./src/index.html -p 3111",
+    "start": "parcel start ./src/index.html -p 3111",
     "build": "parcel build ./src/index.html --public-url ./"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "babel-preset-es2015": "^6.24.1",
-    "less": "^3.9.0",
-    "parcel-bundler": "1.11.0",
-    "typescript": "^3.3.3333"
+    "@babel/core": "^7.8.7",
+    "less": "^3.11.1",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.8.3"
   }
 }
